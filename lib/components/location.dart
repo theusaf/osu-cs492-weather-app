@@ -14,8 +14,20 @@ class _LocationWidgetState extends State<LocationWidget> {
   String city = '';
   String zip = '';
 
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
   void getLocation() async {
     final location = await getLocationFromGPS();
+
+    setState(() {
+      state = location.state;
+      city = location.city;
+      zip = location.zip;
+    });
   }
 
   @override
@@ -29,7 +41,7 @@ class _LocationWidgetState extends State<LocationWidget> {
             children: [
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Center(
-                  child: Text('Weather Location'),
+                  child: Text('Weather Location: $city, $state, $zip'),
                 ),
                 SizedBox(
                   height: 10,
