@@ -64,7 +64,7 @@ Future<WeatherLocation> getLocationFromGPS() async {
     print(position);
     final List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
+    print(placemarks[0]);
   } catch (e) {
     print(e);
   }
