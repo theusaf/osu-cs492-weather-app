@@ -4,14 +4,11 @@ import '../models/location.dart';
 class Location extends StatefulWidget {
   const Location({super.key});
 
-  
-
   @override
   State<Location> createState() => _LocationState();
 }
 
 class _LocationState extends State<Location> {
-
   String state = "Oregon";
   String city = "Bend";
   String zip = "97702";
@@ -39,36 +36,39 @@ class _LocationState extends State<Location> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 100.0,
-              child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'City',)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 100.0,
+                child: TextField(
+                    decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'City',
+                )),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 100.0,
-              child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'State',)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 100.0,
+                child: TextField(
+                    decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'State',
+                )),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 100.0,
-              child: TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Zip',)),
-            ),
-          )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 100.0,
+                child: TextField(
+                    decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Zip',
+                )),
+              ),
+            )
           ],
         ),
         const Text("Button")
