@@ -14,13 +14,46 @@ class WeatherLocation{
 
 }
 
+Future<WeatherLocation> getLocationFromAddress(String city, String state, String zip) async {
+String addressString = "$city $state $zip";
+List<Location> locations = await locationFromAddress(addressString);
+
+return getLocationFromCoords(locations[0].latitude, locations[0].longitude);
+
+}
+
 Future<WeatherLocation> getLocationFromGPS() async {
   Position position = await _determinePosition();
 
+  return getLocationFromCoords(position.latitude, position.longitude);
+}
 
-  List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
 
-  return WeatherLocation(position.latitude, position.longitude, "City", "State", "00000");
+Future<WeatherLocation> getLocationFromCoords(double latitude, double longitude) async {
+
+  // State: administrativeArea
+  // City: locality
+  // Zip: postalCode
+  String city = "";
+  String state = "";
+  String zip = "";
+
+
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+  for (int i = 0; i < placemarks.length; i++){
+    if (city == ""){
+      city = placemarks[i].locality!;
+    } 
+    if (state== ""){
+      state = placemarks[i].administrativeArea!;
+    } 
+    if (zip == ""){
+      zip = placemarks[i].postalCode!;
+    }  
+
+  }
+  return WeatherLocation(latitude, longitude, city, state, zip);
 }
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/location.dart';
 
 class Location extends StatefulWidget {
@@ -16,6 +17,11 @@ class _LocationState extends State<Location> {
   String city = "Bend";
   String zip = "97702";
 
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final zipController = TextEditingController();
+
+
   void getLocation() async {
     WeatherLocation location = await getLocationFromGPS();
     setState(() {
@@ -31,6 +37,16 @@ class _LocationState extends State<Location> {
     getLocation();
   }
 
+  void addLocationButtonPressed() async{
+    WeatherLocation location = await getLocationFromAddress(cityController.text, stateController.text, zipController.text);
+    
+    setState(() {
+      state = location.state;
+      city = location.city;
+      zip = location.zip;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,7 +60,8 @@ class _LocationState extends State<Location> {
             child: SizedBox(
               width: 100.0,
               child: TextField(
-              decoration: InputDecoration(
+                controller: cityController,
+                decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'City',)),
             ),
@@ -54,7 +71,8 @@ class _LocationState extends State<Location> {
             child: SizedBox(
               width: 100.0,
               child: TextField(
-              decoration: InputDecoration(
+                controller: stateController,
+                decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'State',)),
             ),
@@ -64,14 +82,19 @@ class _LocationState extends State<Location> {
             child: SizedBox(
               width: 100.0,
               child: TextField(
-              decoration: InputDecoration(
+                controller: zipController,
+                decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Zip',)),
             ),
           )
           ],
         ),
-        const Text("Button")
+        const SizedBox(height: 30),
+          ElevatedButton(
+            onPressed: addLocationButtonPressed,
+            child: const Text('Add Location'),
+          ),
       ],
     );
   }
