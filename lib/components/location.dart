@@ -13,6 +13,10 @@ class _LocationState extends State<Location> {
   String city = "Bend";
   String zip = "97702";
 
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+  final zipController = TextEditingController();
+
   void getLocation() async {
     WeatherLocation location = await getLocationFromGPS();
     setState(() {
@@ -25,6 +29,10 @@ class _LocationState extends State<Location> {
   @override
   void initState() {
     super.initState();
+    getLocation();
+  }
+
+  void onLocationButtonPressed() {
     getLocation();
   }
 
@@ -41,10 +49,11 @@ class _LocationState extends State<Location> {
               child: SizedBox(
                 width: 100.0,
                 child: TextField(
+                    controller: cityController,
                     decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'City',
-                )),
+                      border: OutlineInputBorder(),
+                      labelText: 'City',
+                    )),
               ),
             ),
             Padding(
@@ -52,10 +61,11 @@ class _LocationState extends State<Location> {
               child: SizedBox(
                 width: 100.0,
                 child: TextField(
+                    controller: stateController,
                     decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'State',
-                )),
+                      border: OutlineInputBorder(),
+                      labelText: 'State',
+                    )),
               ),
             ),
             Padding(
@@ -63,10 +73,11 @@ class _LocationState extends State<Location> {
               child: SizedBox(
                 width: 100.0,
                 child: TextField(
+                    controller: zipController,
                     decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Zip',
-                )),
+                      border: OutlineInputBorder(),
+                      labelText: 'Zip',
+                    )),
               ),
             )
           ],
