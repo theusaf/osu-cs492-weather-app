@@ -12,6 +12,22 @@ class WeatherLocation {
       this.latitude, this.longitude, this.city, this.state, this.zip);
 }
 
+Future<WeatherLocation> getLocationFromAddress({
+  required String city,
+  required String state,
+  required String zip,
+}) async {
+  final List<Location> locations = await locationFromAddress(
+      "$city $state $zip");
+  final location = locations.firstOrNull;
+  if (location == null) {
+    return WeatherLocation(0, 0, "City", "State", "00000");
+  } else {
+    return WeatherLocation(
+        location.latitude, location.longitude, city, state, zip);
+  }
+}
+
 Future<WeatherLocation> getLocationFromGPS() async {
   final Position position = await _determinePosition();
   final List<Placemark> placemarks =
