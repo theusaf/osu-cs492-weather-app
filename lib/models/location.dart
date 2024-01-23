@@ -1,28 +1,34 @@
 import 'package:geolocator/geolocator.dart';
-
 import 'package:geocoding/geocoding.dart';
 
-
-class WeatherLocation{
+class WeatherLocation {
   double latitude;
   double longitude;
   String city;
   String state;
   String zip;
 
-  WeatherLocation(this.latitude, this.longitude, this.city, this.state, this.zip);
-
+  WeatherLocation(
+      this.latitude, this.longitude, this.city, this.state, this.zip);
 }
 
 Future<WeatherLocation> getLocationFromGPS() async {
-  Position position = await _determinePosition();
-
-
-  List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-
-  return WeatherLocation(position.latitude, position.longitude, "City", "State", "00000");
+  final Position position = await _determinePosition();
+  final List<Placemark> placemarks =
+      await placemarkFromCoordinates(position.latitude, position.longitude);
+  final placemark = placemarks.firstOrNull;
+  if (placemark == null) {
+    return WeatherLocation(
+        position.latitude, position.longitude, "City", "State", "00000");
+  } else {
+    return WeatherLocation(
+        position.latitude,
+        position.longitude,
+        placemark.locality!,
+        placemark.administrativeArea!,
+        placemark.postalCode!);
+  }
 }
-
 
 /// Determine the current position of the device.
 ///
@@ -36,7 +42,7 @@ Future<Position> _determinePosition() async {
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
     // Location services are not enabled don't continue
-    // accessing the position and request users of the 
+    // accessing the position and request users of the
     // App to enable the location services.
     return Future.error('Location services are disabled.');
   }
@@ -47,18 +53,18 @@ Future<Position> _determinePosition() async {
     if (permission == LocationPermission.denied) {
       // Permissions are denied, next time you could try
       // requesting permissions again (this is also where
-      // Android's shouldShowRequestPermissionRationale 
+      // Android's shouldShowRequestPermissionRationale
       // returned true. According to Android guidelines
       // your App should show an explanatory UI now.
       return Future.error('Location permissions are denied');
     }
   }
-  
+
   if (permission == LocationPermission.deniedForever) {
-    // Permissions are denied forever, handle appropriately. 
+    // Permissions are denied forever, handle appropriately.
     return Future.error(
-      'Location permissions are permanently denied, we cannot request permissions.');
-  } 
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
