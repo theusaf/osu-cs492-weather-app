@@ -32,10 +32,16 @@ class _LocationState extends State<Location> {
     getLocation();
   }
 
-  void onAddLocationButtonPressed() {
-    print(cityController.text);
-    print(stateController.text);
-    print(zipController.text);
+  void onAddLocationButtonPressed() async {
+    final location = await getLocationFromAddress(
+        city: cityController.text,
+        state: stateController.text,
+        zip: zipController.text);
+    setState(() {
+      state = location.state;
+      city = location.city;
+      zip = location.zip;
+    });
   }
 
   @override

@@ -12,20 +12,33 @@ class WeatherLocation {
       this.latitude, this.longitude, this.city, this.state, this.zip);
 }
 
+WeatherLocation _convertPlacementToWeatherLocation(
+    {Placemark? placement, required double lat, required double lon}) {
+  if (placement == null) {
+    return WeatherLocation(0, 0, "City", "State", "00000");
+  } else {
+    return WeatherLocation(lat, lon, placement.locality!,
+        placement.administrativeArea!, placement.postalCode!);
+  }
+}
+
 Future<WeatherLocation> getLocationFromAddress({
   required String city,
   required String state,
   required String zip,
 }) async {
-  final List<Location> locations = await locationFromAddress(
-      "$city $state $zip");
+  final List<Location> locations =
+      await locationFromAddress("$city $state $zip");
   final location = locations.firstOrNull;
-  if (location == null) {
-    return WeatherLocation(0, 0, "City", "State", "00000");
-  } else {
-    return WeatherLocation(
-        location.latitude, location.longitude, city, state, zip);
-  }
+  return _convertPlacementToWeatherLocation(
+      placement: null, lat: location!.latitude, lon: location.longitude);
+}
+
+Future<WeatherLocation> getLocationFromCoords(double lat, double lon) async {
+  final placements = await placemarkFromCoordinates(lat, lon);
+  final placement = placements.firstOrNull;
+  return _convertPlacementToWeatherLocation(
+      placement: placement, lat: lat, lon: lon);
 }
 
 Future<WeatherLocation> getLocationFromGPS() async {
@@ -33,17 +46,8 @@ Future<WeatherLocation> getLocationFromGPS() async {
   final List<Placemark> placemarks =
       await placemarkFromCoordinates(position.latitude, position.longitude);
   final placemark = placemarks.firstOrNull;
-  if (placemark == null) {
-    return WeatherLocation(
-        position.latitude, position.longitude, "City", "State", "00000");
-  } else {
-    return WeatherLocation(
-        position.latitude,
-        position.longitude,
-        placemark.locality!,
-        placemark.administrativeArea!,
-        placemark.postalCode!);
-  }
+  return _convertPlacementToWeatherLocation(
+      placement: placemark, lat: position.latitude, lon: position.longitude);
 }
 
 /// Determine the current position of the device.
