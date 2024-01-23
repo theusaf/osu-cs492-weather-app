@@ -1,3 +1,4 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 /// Determine the current position of the device.
@@ -58,6 +59,15 @@ class WeatherLocation {
 }
 
 Future<WeatherLocation> getLocationFromGPS() async {
+  try {
+    final Position position = await _determinePosition();
+    print(position);
+    final List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    print(placemarks);
+  } catch (e) {
+    print(e);
+  }
   return WeatherLocation(
       city: "hi", state: "there", zip: "12345", latitude: 0, longitude: 0);
 }
