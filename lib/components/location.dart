@@ -1,13 +1,23 @@
+import 'package:cs492_weather_app/models/location.dart';
 import 'package:flutter/material.dart';
 
-class WeatherLocationWidget extends StatefulWidget {
-  const WeatherLocationWidget({Key? key}) : super(key: key);
+class LocationWidget extends StatefulWidget {
+  const LocationWidget({Key? key}) : super(key: key);
 
   @override
-  State<WeatherLocationWidget> createState() => _WeatherLocationWidgetState();
+  State<LocationWidget> createState() => _LocationWidgetState();
 }
 
-class _WeatherLocationWidgetState extends State<WeatherLocationWidget> {
+class _LocationWidgetState extends State<LocationWidget> {
+
+  String state = '';
+  String city = '';
+  String zip = '';
+
+  void getLocation() async {
+    final location = await getLocationFromGPS();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(

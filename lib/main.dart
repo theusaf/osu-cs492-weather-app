@@ -29,7 +29,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [WeatherLocationWidget()],
+        children: [LocationWidget()],
       ),
     );
   }
