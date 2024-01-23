@@ -32,8 +32,10 @@ class _LocationState extends State<Location> {
     getLocation();
   }
 
-  void onLocationButtonPressed() {
-    getLocation();
+  void onAddLocationButtonPressed() {
+    print(cityController.text);
+    print(stateController.text);
+    print(zipController.text);
   }
 
   @override
@@ -82,7 +84,9 @@ class _LocationState extends State<Location> {
             )
           ],
         ),
-        const Text("Button")
+        ElevatedButton(
+            onPressed: onAddLocationButtonPressed,
+            child: const Text("Add Location"))
       ],
     );
   }
