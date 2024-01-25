@@ -1,4 +1,4 @@
-import 'components/location.dart';
+import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,7 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
