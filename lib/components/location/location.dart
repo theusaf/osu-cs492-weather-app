@@ -5,7 +5,8 @@ import 'location_text.dart';
 class Location extends StatefulWidget {
   // TODO: Add a setLocation function variable which should be passed from main.dart
   // See bottom_navigation for an example
-  const Location({super.key});
+  final Function setLocation;
+  const Location({super.key, required this.setLocation});
 
   @override
   State<Location> createState() => _LocationState();
@@ -16,9 +17,7 @@ class _LocationState extends State<Location> {
   // UserLocation _location =...
   // Be sure to update the text display to display from the object.
 
-  String state = "";
-  String city = "";
-  String zip = "";
+  UserLocation? _location;
 
   final cityController = TextEditingController();
   final stateController = TextEditingController();
@@ -26,12 +25,11 @@ class _LocationState extends State<Location> {
 
   void getLocation() async {
     UserLocation location = await getLocationFromGPS();
+    widget.setLocation(location);
     // TODO: use the new setLocation function passed from main.dart to update the location.
     setState(() {
       // TODO: Update the _location object instead of state, city, zip
-      state = location.state;
-      city = location.city;
-      zip = location.zip;
+      _location = location;
     });
   }
 
@@ -45,11 +43,9 @@ class _LocationState extends State<Location> {
     // TODO: Same changes as getLocation()
     UserLocation location = await getLocationFromAddress(
         cityController.text, stateController.text, zipController.text);
-
+    widget.setLocation(location);
     setState(() {
-      state = location.state;
-      city = location.city;
-      zip = location.zip;
+      _location = location;
     });
   }
 
@@ -58,7 +54,7 @@ class _LocationState extends State<Location> {
     return Column(
       children: [
         // TODO: use the UserLocation _location variable instead of city, state, zip
-        Text((city != "") ? "Location: $city, $state, $zip" : ""),
+        Text((_location?.city != "") ? "Location: ${_location?.city}, ${_location?.state}, ${_location?.zip}" : ""),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

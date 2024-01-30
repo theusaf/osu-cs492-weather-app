@@ -1,6 +1,7 @@
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'components/bottomNavigation/bottom_navigation.dart';
+import 'models/user_location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,10 +34,29 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
    int _selectedIndex = 0;
 
-   // TODO: Create a variable to store the UserLocation
-   // TODO: Create a setter function for the location variable
-   // TODO: Pass the setter function to Location()
-   // See location.dart for more TODO
+   UserLocation? _location;
+   late List<Widget> _widgetOptions = setWidgetOptions();
+
+   List<Widget> setWidgetOptions() {
+        List<Widget> widgetOptions = <Widget>[
+              Text(
+                'Weather for ${_location?.city}, ${_location?.state} ${_location?.zip}',
+              ),
+              Location(setLocation: setLocation),
+              const Text(
+                'Alerts',
+              ),
+            ];
+
+      return widgetOptions;
+   }
+
+   void setLocation(UserLocation location){
+    setState(() {
+      _location = location;
+      _widgetOptions = setWidgetOptions();
+    });
+   }
 
     // this is the setter function used to set the _selected index value
     void setSelectedIndex(index){
@@ -48,16 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
   
-  // This stores the options for each page
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Weather',
-    ),
-    Location(),
-    Text(
-      'Alerts',
-    ),
-  ];
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _widgetOptions.elementAt(_selectedIndex),
+            Text("Testing: ${_location?.city}")
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
