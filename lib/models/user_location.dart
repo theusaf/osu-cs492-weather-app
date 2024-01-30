@@ -6,7 +6,6 @@ import 'package:geocoding/geocoding.dart';
 // Contains required information for:
 // Displaying location to user (city, state, zip)
 // Finding Forecast information in Weather API (latitude, Longitude)
-// TODO: Potentially incorporate grid location from forecast
 
 const allowedNation = "United States";
 
