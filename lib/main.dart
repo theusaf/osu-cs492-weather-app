@@ -33,8 +33,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
    int _selectedIndex = 0;
-
+   List<UserLocation> locations = [];
    UserLocation? _location;
+
    late List<Widget> _widgetOptions = setWidgetOptions();
 
    List<Widget> setWidgetOptions() {
@@ -42,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                 'Weather for ${_location?.city}, ${_location?.state} ${_location?.zip}',
               ),
-              Location(setLocation: setLocation),
+              Location(setLocation: setLocation, getLocation: getLocation, locations: locations),
               const Text(
                 'Alerts',
               ),
@@ -56,6 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _location = location;
       _widgetOptions = setWidgetOptions();
     });
+   }
+
+   UserLocation? getLocation(){
+    return _location;
    }
 
     // this is the setter function used to set the _selected index value
@@ -72,15 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _widgetOptions.elementAt(_selectedIndex),
-            Text("Testing: ${_location?.city}")
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: _widgetOptions.elementAt(_selectedIndex), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigation(setSelectedIndex: setSelectedIndex),
     );
   }
