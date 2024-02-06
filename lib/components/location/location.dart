@@ -3,7 +3,6 @@ import '../../models/user_location.dart';
 import 'location_text.dart';
 
 class Location extends StatefulWidget {
-
   // The setter and getter for the active location
   final Function setLocation;
   final Function getLocation;
@@ -12,14 +11,17 @@ class Location extends StatefulWidget {
   // This needs to be stored in main.dart so it is maintained when toggling through windows
   final List<UserLocation> locations;
 
-  const Location({super.key, required this.setLocation, required this.getLocation, required this.locations});
+  const Location(
+      {super.key,
+      required this.setLocation,
+      required this.getLocation,
+      required this.locations});
 
   @override
   State<Location> createState() => _LocationState();
 }
 
 class _LocationState extends State<Location> {
-
   // Edit mode allows user to delete stored locations
   bool _editMode = false;
 
@@ -37,12 +39,10 @@ class _LocationState extends State<Location> {
   final stateController = TextEditingController();
   final zipController = TextEditingController();
 
-
   // When an item from the list is tapped, set the current location to whichever one was tapped
   void tapList(index) {
-      widget.setLocation(widget.locations.elementAt(index));
+    widget.setLocation(widget.locations.elementAt(index));
   }
-
 
   // There are two ways to add the location
   // First, if the user enters text into the text boxes, geocoding will attempt to find it.
@@ -58,25 +58,22 @@ class _LocationState extends State<Location> {
     updateLocation(location);
   }
 
-
   // Update location sets the current location to the passed location
   // Additionally, it adds the location only if the location isn't already in the list
   void updateLocation(UserLocation location) {
     widget.setLocation(location);
     setState(() {
-      if (!widget.locations.contains(location)){
+      if (!widget.locations.contains(location)) {
         widget.locations.add(location);
       }
     });
   }
-
 
   // Delete location removes the location from the list by index
   void deleteLocation(index) {
     setState(() {
       widget.locations.removeAt(index);
     });
-    
   }
 
   @override
@@ -88,7 +85,11 @@ class _LocationState extends State<Location> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Saved Locations:"),
-            IconButton(icon: const Icon(Icons.edit), onPressed: toggleEditMode, color: const Color.fromRGBO(18, 98, 227, 1.0),)
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: toggleEditMode,
+              color: const Color.fromRGBO(18, 98, 227, 1.0),
+            )
           ],
         ),
         Expanded(child: locationsListWidget()),
@@ -97,23 +98,37 @@ class _LocationState extends State<Location> {
   }
 
   ListView locationsListWidget() => ListView.builder(
-    itemCount: widget.locations.length, 
-    itemBuilder: (context, index) => ListTile(
-      title: listItemText(index),
-      onTap: () {tapList(index);}));
+      itemCount: widget.locations.length,
+      itemBuilder: (context, index) => ListTile(
+          title: listItemText(index),
+          onTap: () {
+            tapList(index);
+          }));
 
   Row listItemText(int index) => Row(
-    children: [
-      Text("${widget.locations.elementAt(index).city}, ${widget.locations.elementAt(index).state}, ${widget.locations.elementAt(index).zip}"),
-      (_editMode) ? IconButton(onPressed: () {deleteLocation(index);}, icon: const Icon(Icons.delete, color: Color.fromRGBO(227, 18, 67, 1.0),)) : const SizedBox()
-    ],
-  );
+        children: [
+          Text(
+              "${widget.locations.elementAt(index).city}, ${widget.locations.elementAt(index).state}, ${widget.locations.elementAt(index).zip}"),
+          (_editMode)
+              ? IconButton(
+                  onPressed: () {
+                    deleteLocation(index);
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Color.fromRGBO(227, 18, 67, 1.0),
+                  ))
+              : const SizedBox()
+        ],
+      );
 
   Column userInput() {
     return Column(
       children: [
         const SizedBox(height: 50),
-        Text((widget.getLocation() != null) ? "Location: ${widget.getLocation().city}, ${widget.getLocation().state}, ${widget.getLocation().zip}" : ""),
+        Text((widget.getLocation() != null)
+            ? "Location: ${widget.getLocation().city}, ${widget.getLocation().state}, ${widget.getLocation().zip}"
+            : ""),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -132,23 +147,23 @@ class _LocationState extends State<Location> {
 
   Row buttons() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: addLocationButtonPressed,
-              child: const Text('Add Location'),
-            ),
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: addLocationButtonPressed,
+            child: const Text('Add Location'),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                      onPressed: addLocationGPSButtonPressed,
-                      child: const Text('Add GPS Location'),
-                    ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: addLocationGPSButtonPressed,
+            child: const Text('Add GPS Location'),
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

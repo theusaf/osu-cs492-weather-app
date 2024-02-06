@@ -22,14 +22,15 @@ class UserLocation {
   // This allows us to define how we want to establish equality between two UserLocation Objects
   // In this case, I want anything that shares city, state, and zip to be considered equal, even if lat/long are not equal
   @override
-  bool operator==(Object other) =>
-      other is UserLocation && city == other.city && state == other.state && zip == other.zip;
+  bool operator ==(Object other) =>
+      other is UserLocation &&
+      city == other.city &&
+      state == other.state &&
+      zip == other.zip;
 
   // We should alo override the hashCode when we override the == operator
   @override
   int get hashCode => Object.hash(city, state, zip);
-  
-  
 }
 
 Future<UserLocation> getLocationFromAddress(
