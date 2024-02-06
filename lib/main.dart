@@ -3,6 +3,16 @@ import 'package:flutter/material.dart';
 import 'components/bottomNavigation/bottom_navigation.dart';
 import 'models/user_location.dart';
 
+
+// TODO:
+//  Create a new weather_screen.dart in a new weatherScreen folder in the components folder. 
+//  main.dart should call this component instead of the Text() in widgetOptions
+//  display the current location in the WeatherScreen() component
+//  if you need help, check the readme for hints on accopmlishing today's todos
+
+
+
+
 void main() {
   runApp(const MyApp());
 }
