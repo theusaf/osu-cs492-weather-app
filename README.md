@@ -17,24 +17,24 @@ A few resources to get you started if this is your first Flutter project:
 
 ## Progress Notes:
 
-1/23/24
+### 1/23/24
 First phase was implemented in class.
 This included geolocation and geocoding functionality.
 This grabs GPS data from phone and finds address, or allows user to manually enter a city, state, zip and find the location.
 
-1/24/24
+### 1/24/24
 Cleaned up naming and updated following conventions.
 Weather location has been changed to user location.
 Comments added in the user_location.dart models.
 Extracted location text boxes from location.dart to location_text.dart
 
-1/30/24
+### 1/30/24
 created bottom navigation menu
 updated location.dart to store the location information in an array
 added setters and getters for current location to main.dart
 
 
-2/6/24
+### 2/6/24
 The TODO is in main.dart. The readme will also contain hints for accomplishing the todo.
 If you want to try without hints, use main.dart. You can reference the hints as needed.
 
@@ -62,4 +62,26 @@ in components / create a folder called weatherScreen
         Use ternary logic to handle null values (see the Text() component in location.dart for an example of ternary logic)
 
 
+### 2/13/24
+
+    You'll need to add a new line to your android manifest.xml (Android->App->Src->Main->AndroidManifext.xml)
+    <uses-permission android:name="android.permission.INTERNET" />
+    see: https://docs.flutter.dev/cookbook/networking/fetch-data
+
+    run the following in your terminal to make sure dependencies are good:
+        flutter clean
+        flutter pub get
+
+    TODO:
+    Look at the new weather_forecast.dart file (in models).
+    Read through the class, including the factory.
+    Read through the getWeatherForecasts function.
+    Try to figure out what each line of code is accomplishing.
+
+    Work through the TODOs in order (each one is numbered)
+
+    EXTRAS:
+    If you are able to return the forecasts to the weather_screen.dart,
+    Attempt to display some of the information in the text return in ForecastWidget
+    Remember to use ternary logic to handle null cases.
 

@@ -2,6 +2,7 @@ import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'components/bottomNavigation/bottom_navigation.dart';
 import 'models/user_location.dart';
+import 'components/weatherScreen/weather_screen.dart';
 
 
 // TODO:
@@ -50,9 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
    List<Widget> setWidgetOptions() {
         List<Widget> widgetOptions = <Widget>[
-              Text(
-                'Weather for ${_location?.city}, ${_location?.state} ${_location?.zip}',
-              ),
+              WeatherScreen(getLocation: getLocation),
               Location(setLocation: setLocation, getLocation: getLocation, locations: locations),
               const Text(
                 'Alerts',
