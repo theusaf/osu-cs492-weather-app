@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 
 import 'package:geocoding/geocoding.dart';
@@ -17,6 +19,22 @@ class UserLocation {
   String zip;
 
   UserLocation(this.latitude, this.longitude, this.city, this.state, this.zip);
+  UserLocation.fromJson(Map<String, dynamic> json)
+      : latitude = json['latitude'],
+        longitude = json['longitude'],
+        city = json['city'],
+        state = json['state'],
+        zip = json['zip'];
+
+  String toJson() {
+    return jsonEncode({
+      'latitude': latitude,
+      'longitude': longitude,
+      'city': city,
+      'state': state,
+      'zip': zip
+    });
+  }
 
   // This overrides the == operator
   // This allows us to define how we want to establish equality between two UserLocation Objects

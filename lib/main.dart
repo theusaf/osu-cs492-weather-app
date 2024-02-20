@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'models/user_location.dart';
@@ -56,11 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WeatherForecast> _forecasts = [];
   UserLocation? _location;
 
-  void setLocation(UserLocation location) {
+  void setLocation(UserLocation location) async {
     setState(() {
       _location = location;
       _getForecasts();
     });
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('activeLocation', location.toJson());
   }
 
   void _getForecasts() async {
@@ -104,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _light = widget.notifier.value == ThemeMode.light;
 
     initMode();
+    loadActiveLocation();
   }
 
   void initMode() async {
@@ -115,18 +120,15 @@ class _MyHomePageState extends State<MyHomePage> {
         widget.notifier.value = _light ? ThemeMode.light : ThemeMode.dark;
       });
     }
+  }
 
-    // Test your function by changing the mode and restarting the app.
-    // if it restarted in the same mode you left it in, then you succeeded!
-
-    // TODO Final Challenge:
-    // If you made it this far, I think you're ready for a final challenge.
-    // For this, your goal is to save the active location to preferences and get it from preferences when the app starts
-    // To accomplish this, you'll need to add a function to the userLoction class which will return the properties as a json object
-    // you can use jsonEncode(jsonData) to convert this to a string.
-    // once this is a string you can use the prefs setString to save a string value
-
-    // to undo this, you'll need to getString, jsonDecode, and then create a factory in userLocation to re-create the location object
+  void loadActiveLocation() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    String? locationJson = sharedPreferences.getString('activeLocation');
+    if (locationJson != null) {
+      Map<String, dynamic> locationData = jsonDecode(locationJson);
+      setLocation(UserLocation.fromJson(locationData));
+    }
   }
 
   void _toggleLight(value) async {
