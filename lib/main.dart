@@ -107,13 +107,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void initMode() async {
-    // TODO #6: Once you have completed #5, you should have saved preferences
-    // For this part we should once again await shared preferences
-    // Then we should use the getBool() function to get the boolean value of 'light'
-    // This boolean can be null, so be sure to use bool? to allow for null
-    // Finally, be sure to check if that value is null before setting _light to equal it
-    // Additionallyy, you will need to use the setState(() {}) function when you set _light
-    // You'll also need to use the same line of code you used for todo #4 to update the value of the notifier
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool? light = sharedPreferences.getBool('light');
+    if (light != null) {
+      setState(() {
+        _light = light;
+        widget.notifier.value = _light ? ThemeMode.light : ThemeMode.dark;
+      });
+    }
 
     // Test your function by changing the mode and restarting the app.
     // if it restarted in the same mode you left it in, then you succeeded!
