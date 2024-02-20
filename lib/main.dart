@@ -134,14 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
       widget.notifier.value = _light ? ThemeMode.light : ThemeMode.dark;
     });
 
-    // TODO #5:
-    // Next we are going to add the boolean value of light to our shared preferences.
-    // This will allow the app to remember the preference of the user and use that setting when the app loads.
-    // Look through the shared_preferences flutter documentation to see how to write and read preference data
-    // https://pub.dev/packages/shared_preferences
-
-    // create a SharedPreferences variable which awaits SharedPreferences.getInstance().
-    // use the setBool to set a boolean for 'light': value (this will make sense when you read the documentation)
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('light', value);
   }
 
   @override
