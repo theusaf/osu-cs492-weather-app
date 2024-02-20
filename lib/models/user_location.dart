@@ -22,26 +22,30 @@ class UserLocation {
   // This allows us to define how we want to establish equality between two UserLocation Objects
   // In this case, I want anything that shares city, state, and zip to be considered equal, even if lat/long are not equal
   @override
-  bool operator==(Object other) =>
-      other is UserLocation && city == other.city && state == other.state && zip == other.zip;
+  bool operator ==(Object other) =>
+      other is UserLocation &&
+      city == other.city &&
+      state == other.state &&
+      zip == other.zip;
 
   // We should alo override the hashCode when we override the == operator
   @override
   int get hashCode => Object.hash(city, state, zip);
-  
-  
 }
 
-Future<UserLocation> getLocationFromAddress(
+Future<UserLocation?> getLocationFromAddress(
     String city, String state, String zip) async {
   // async function that delivers a UserLocation using the city, state, and/or zip
 
   String addressString = "$city $state $zip";
 
   // geocoding can potentially return locations with only partial addresses
-  List<Location> locations = await locationFromAddress(addressString);
-
-  return getLocationFromCoords(locations[0].latitude, locations[0].longitude);
+  try {
+    List<Location> locations = await locationFromAddress(addressString);
+    return getLocationFromCoords(locations[0].latitude, locations[0].longitude);
+  } on NoResultFoundException {
+    return null;
+  }
 }
 
 Future<UserLocation> getLocationFromGPS() async {
