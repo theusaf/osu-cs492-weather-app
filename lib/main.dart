@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   // This is the value Notifier
   // This is specifically for a theme mode as indicated by <ThemeMode>.
   // the value ThemeMode.light is the default value
-  // TODO #1: Try changing this to ThemeMode.dark to see what happens when you restart the app.
   final ValueNotifier<ThemeMode> _notifier = ValueNotifier(ThemeMode.light);
 
   @override
@@ -97,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // TODO #2: Read through this logic
     // Notice that when this widget is initialized
     // The default value for the bool _light is set to a comparison between the notifier.value and ThemeMode.light
     // This means that by default, light will be true if the notifier.value is light mode
@@ -133,11 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _toggleLight(value) async {
     setState(() {
       _light = value;
-
-      // TODO #4: Be sure to read through TODO #3 below before starting this
-      //  Create logic that will set the widget.notifier.value to ThemeMode.light if light is true,
-      //  and ThemeMode.dark if light is false.
-      // Test to make sure your toggle works before moving on
+      widget.notifier.value = _light ? ThemeMode.light : ThemeMode.dark;
     });
 
     // TODO #5:
@@ -186,7 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.labelLarge),
           Transform.scale(
             scale: 0.5,
-            // TODO #3: read through the code for the Switch()
             // This is the Switch. It will change when tapped
             // The value for the Switch is whatever the value of the boolean variable light is
             // When you toggle the switch, it triggers the onChanged logic, which called _toggleLight
