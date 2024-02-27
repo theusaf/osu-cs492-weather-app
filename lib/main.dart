@@ -115,17 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (locationString != null) {
       setLocation(UserLocation.fromJson(jsonDecode(locationString)));
     }
-    // Test your function by changing the mode and restarting the app.
-    // if it restarted in the same mode you left it in, then you succeeded!
-
-    // TODO Final Challenge:
-    // If you made it this far, I think you're ready for a final challenge.
-    // For this, your goal is to save the active location to preferences and get it from preferences when the app starts
-    // To accomplish this, you'll need to add a function to the userLoction class which will return the properties as a json object
-    // you can use jsonEncode(jsonData) to convert this to a string.
-    // once this is a string you can use the prefs setString to save a string value
-
-    // to undo this, you'll need to getString, jsonDecode, and then create a factory in userLocation to re-create the location object
   }
 
   void _toggleLight(value) async {
