@@ -69,6 +69,7 @@ flutter:
   assets:
     - assets/sql/create.sql
     - assets/sql/insert.sql
+    - assets/sql/delete.sql
     - assets/sql/get_all.sql
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -42,25 +42,23 @@ class LocationDatabase {
 
   void insertLocation(UserLocation location) async {
     await _db.transaction((txn) async {
-      // TODO #1: Instead of an empty string, use the rootBundle.loadstring to load the insert query from the sql file
-      // Read through the query in insert.sql to see how it looks. What do the ? represent?
-      String query = "";
-
-      // TODO #2: Update the parameters to pull latitude, longitude, city, state, and zip from location
-      List<dynamic> rawInsertParameters = [];
+      final String query = await rootBundle.loadString("assets/sql/insert.sql");
+      final List<dynamic> rawInsertParameters = [
+        location.latitude,
+        location.longitude,
+        location.city,
+        location.state,
+        location.zip
+      ];
       await txn.rawInsert(query, rawInsertParameters);
     });
   }
 
   void deleteLocation(UserLocation location) async {
-    // TODO #3: Build this using insertLocation as a guide
-    // create the sql file with the proper code for deleting
-    // add the sql file to the assets in the pubspec.yaml
-    // add the constant to the path at the top of this file with the other constants
+    final String query = await rootBundle.loadString("assets/sql/delete.sql");
 
-    // Use the transaction function: rawDelete rather than rawInsert
-    // use the city, state, and zip to dictate the proper deletion
-
-    // For the next TODO, look in location.dart.
+    await _db.transaction((txn) async {
+      await txn.rawDelete(query, [location.city, location.state, location.zip]);
+    });
   }
 }
