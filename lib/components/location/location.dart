@@ -49,7 +49,7 @@ class _LocationState extends State<Location> {
     // assign those locations to widget.locations
     // This will only be called by initState when the app loads
 
-    // TODO #5: Test everthing!
+    // TODO #5: Test everything!
     // Make sure you can add locations, close the app, reopen and make sure the locations persist.
     // Make sure you can delete locations, close the app, reopen and make sure the deletions persist.
     // Be sure to test deletions from the beginning, middle, and end of the locations
