@@ -86,7 +86,7 @@ update the Text() return to display the location.city, location.state, location.
     Attempt to display some of the information in the text return in ForecastWidget
     Remember to use ternary logic to handle null cases.
 
-### 2/13/24
+### 2/20/24
 
     Be sure to run:
 
@@ -108,3 +108,21 @@ update the Text() return to display the location.city, location.state, location.
     The goal for this:
       When the user adds/updates their current location, save that to preferences as a jsonEncode string
       Load the string from preferences when the app is initialized and decode the string and map it to the UserLocation object
+
+### 2/27/24
+
+    Be sure to run:
+
+    flutter clean
+    flutter pub get
+
+    TODO:
+    There are todos in the new location_database.dart file.
+    We will also be adding new assets to the assets/sql folder.
+    These assets will need to be added to the pubspec.yaml file as well.
+
+    The primary goal for today's class is to get practice with using sqflite for persistence of data
+    When a user adds a location, it should be added to the database as well.
+    When a user deletes a location, it should be deleted from the database.
+    The location rows should be called from the database during initState() and used to update the widget.locations list.
+    This should automatically populate saved locations.
