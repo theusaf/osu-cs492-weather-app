@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'models/user_location.dart';
 import 'components/weatherScreen/weather_screen.dart';
 import 'models/weather_forecast.dart';
-// don't remove this, you'll need it today
 import 'package:shared_preferences/shared_preferences.dart';
 
 const sqlCreateDatabase = 'assets/sql/create.sql';
