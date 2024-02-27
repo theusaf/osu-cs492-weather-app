@@ -166,11 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.labelLarge),
           Transform.scale(
             scale: 0.5,
-            // TODO #3: read through the code for the Switch()
-            // This is the Switch. It will change when tapped
-            // The value for the Switch is whatever the value of the boolean variable light is
-            // When you toggle the switch, it triggers the onChanged logic, which called _toggleLight
-            // Move back up to the _toggleLight function and add the required code for the todo.
             child: Switch(
               value: _light,
               onChanged: _toggleLight,
