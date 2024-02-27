@@ -44,15 +44,8 @@ class _LocationState extends State<Location> {
   }
 
   void _setLocationsFromDatabase(List<UserLocation> locations) async {
-    // TODO #4: Once you have the inserts and deletes logic,
-    // figure out how to use the existing getLocations function to get a list of locations from the database
-    // assign those locations to widget.locations
-    // This will only be called by initState when the app loads
-
-    // TODO #5: Test everything!
-    // Make sure you can add locations, close the app, reopen and make sure the locations persist.
-    // Make sure you can delete locations, close the app, reopen and make sure the deletions persist.
-    // Be sure to test deletions from the beginning, middle, and end of the locations
+    widget.locations.clear();
+    widget.locations.addAll(locations);
   }
 
   void _insertLocationIntoDatabase(UserLocation location) async {
