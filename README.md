@@ -107,4 +107,4 @@ update the Text() return to display the location.city, location.state, location.
 
     The goal for this:
       When the user adds/updates their current location, save that to preferences as a jsonEncode string
-      Load the string from preferences when the app is initialized and decode the string and map it to the UserLoction object
+      Load the string from preferences when the app is initialized and decode the string and map it to the UserLocation object

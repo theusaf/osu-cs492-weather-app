@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/user_location.dart';
+import '../../models/location_database.dart';
 
 class Location extends StatefulWidget {
   // The setter and getter for the active location
@@ -23,6 +24,48 @@ class Location extends StatefulWidget {
 class _LocationState extends State<Location> {
   // Edit mode allows user to delete stored locations
   bool _editMode = false;
+
+  LocationDatabase? _db;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDatabase();
+  }
+
+  void _loadDatabase() async {
+    LocationDatabase db = await LocationDatabase.open();
+    List<UserLocation> locations = await db.getLocations();
+
+    setState(() {
+      _db = db;
+      _setLocationsFromDatabase();
+    });
+  }
+
+  void _setLocationsFromDatabase() async {
+    // TODO #4: Once you have the inserts and deletes logic,
+    // figure out how to use the existing getLocations function to get a list of locations from the database
+    // assign those locations to widget.locations
+    // This will only be called by initState when the app loads
+
+    // TODO #5: Test everthing!
+    // Make sure you can add locations, close the app, reopen and make sure the locations persist.
+    // Make sure you can delete locations, close the app, reopen and make sure the deletions persist.
+    // Be sure to test deletions from the beginning, middle, and end of the locations
+  }
+
+  void _insertLocationIntoDatabase(UserLocation location) async {
+    if (_db != null) {
+      _db?.insertLocation(location);
+    }
+  }
+
+  void _deleteLocationFromDatabase(UserLocation location) async {
+    if (_db != null) {
+      _db?.deleteLocation(location);
+    }
+  }
 
   // When the edit button is pressed, the editMode flips to its opposite
   // true -> false
@@ -66,6 +109,7 @@ class _LocationState extends State<Location> {
     setState(() {
       if (!widget.locations.contains(location)) {
         widget.locations.add(location);
+        _insertLocationIntoDatabase(location);
       }
     });
   }
@@ -73,6 +117,7 @@ class _LocationState extends State<Location> {
   // Delete location removes the location from the list by index
   void deleteLocation(index) {
     setState(() {
+      _deleteLocationFromDatabase(widget.locations.elementAt(index));
       widget.locations.removeAt(index);
     });
   }

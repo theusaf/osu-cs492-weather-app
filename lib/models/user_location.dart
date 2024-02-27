@@ -2,6 +2,8 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:geocoding/geocoding.dart';
 
+import 'dart:convert';
+
 // User location model
 // Contains required information for:
 // Displaying location to user (city, state, zip)
@@ -16,7 +18,12 @@ class UserLocation {
   String state;
   String zip;
 
-  UserLocation(this.latitude, this.longitude, this.city, this.state, this.zip);
+  UserLocation(
+      {required this.latitude,
+      required this.longitude,
+      required this.city,
+      required this.state,
+      required this.zip});
 
   // This overrides the == operator
   // This allows us to define how we want to establish equality between two UserLocation Objects
@@ -31,6 +38,37 @@ class UserLocation {
   // We should alo override the hashCode when we override the == operator
   @override
   int get hashCode => Object.hash(city, state, zip);
+
+  String toJsonString() {
+    Map<String, dynamic> mappedObject = {
+      "latitude": latitude,
+      "longitude": longitude,
+      "city": city,
+      "state": state,
+      "zip": zip
+    };
+
+    return jsonEncode(mappedObject);
+  }
+
+  factory UserLocation.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'latitude': double latitude,
+        'longitude': double longitude,
+        'city': String city,
+        'state': String state,
+        'zip': String zip
+      } =>
+        UserLocation(
+            latitude: latitude,
+            longitude: longitude,
+            city: city,
+            state: state,
+            zip: zip),
+      _ => throw const FormatException('Failed to load UserLocation.'),
+    };
+  }
 }
 
 Future<UserLocation?> getLocationFromAddress(
@@ -93,7 +131,12 @@ Future<UserLocation> getLocationFromCoords(
     Future.error("Error: Location must be in $allowedNation.");
   }
 
-  return UserLocation(latitude, longitude, city, state, zip);
+  return UserLocation(
+      latitude: latitude,
+      longitude: longitude,
+      city: city,
+      state: state,
+      zip: zip);
 }
 
 // NOTE: THIS FUNCTION IS A HELPER FUNCTION DIRECTLY FROM THE GEOLOCATOR DOCUMENTATION.
