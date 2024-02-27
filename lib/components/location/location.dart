@@ -39,11 +39,11 @@ class _LocationState extends State<Location> {
 
     setState(() {
       _db = db;
-      _setLocationsFromDatabase();
+      _setLocationsFromDatabase(locations);
     });
   }
 
-  void _setLocationsFromDatabase() async {
+  void _setLocationsFromDatabase(List<UserLocation> locations) async {
     // TODO #4: Once you have the inserts and deletes logic,
     // figure out how to use the existing getLocations function to get a list of locations from the database
     // assign those locations to widget.locations
