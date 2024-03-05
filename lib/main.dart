@@ -46,6 +46,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<UserLocation> locations = [];
   List<WeatherForecast> _forecasts = [];
+  List<WeatherForecast> _forecastsHourly = [];
   UserLocation? _location;
 
   void setLocation(UserLocation location) async {
@@ -63,10 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _getForecasts() async {
     if (_location != null) {
-      List<WeatherForecast> forecasts =
-          await getWeatherForecasts(_location!, true);
+      // We collect both the twice-daily forecasts and the hourly forecasts
+      List<WeatherForecast> forecasts = await getWeatherForecasts(_location!, false);
+      List<WeatherForecast> forecastsHourly = await getWeatherForecasts(_location!, true);
       setState(() {
         _forecasts = forecasts;
+        _forecastsHourly = forecastsHourly;
       });
     }
   }
@@ -74,6 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WeatherForecast> getForecasts() {
     return _forecasts;
   }
+
+  List<WeatherForecast> getForecastsHourly() {
+    return _forecastsHourly;
+  }
+
 
   UserLocation? getLocation() {
     return _location;
@@ -147,8 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: WeatherScreen(
           getLocation: getLocation,
           getForecasts: getForecasts,
-          setLocation: setLocation,
-          locations: locations),
+          getForecastsHourly: getForecastsHourly,
+          setLocation: setLocation),
       endDrawer: Drawer(
         child: settingsDrawer(),
       ),
@@ -187,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Location(
                 setLocation: setLocation,
                 getLocation: getLocation,
-                locations: locations),
+                closeEndDrawer: _closeEndDrawer),
           ),
           ElevatedButton(
               onPressed: _closeEndDrawer, child: const Text("Close Settings"))

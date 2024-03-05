@@ -6,15 +6,15 @@ import '../location/location.dart';
 class WeatherScreen extends StatefulWidget {
   final Function getLocation;
   final Function getForecasts;
+  final Function getForecastsHourly;
   final Function setLocation;
-  final List<UserLocation> locations;
 
   const WeatherScreen(
       {super.key,
       required this.getLocation,
       required this.getForecasts,
-      required this.setLocation,
-      required this.locations});
+      required this.getForecastsHourly,
+      required this.setLocation});
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
@@ -27,7 +27,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ? ForecastWidget(
             context: context,
             location: widget.getLocation(),
-            forecasts: widget.getForecasts())
+            forecasts: widget.getForecastsHourly())
         : LocationWidget(widget: widget));
   }
 }
@@ -137,8 +137,7 @@ class LocationWidget extends StatelessWidget {
           ),
           Location(
               setLocation: widget.setLocation,
-              getLocation: widget.getLocation,
-              locations: widget.locations),
+              getLocation: widget.getLocation),
         ],
       ),
     );

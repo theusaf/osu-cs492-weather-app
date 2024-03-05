@@ -6,16 +6,13 @@ class Location extends StatefulWidget {
   // The setter and getter for the active location
   final Function setLocation;
   final Function getLocation;
-
-  // The list of locations
-  // This needs to be stored in main.dart so it is maintained when toggling through windows
-  final List<UserLocation> locations;
+  final Function? closeEndDrawer;
 
   const Location(
       {super.key,
       required this.setLocation,
       required this.getLocation,
-      required this.locations});
+      this.closeEndDrawer});
 
   @override
   State<Location> createState() => _LocationState();
@@ -26,6 +23,8 @@ class _LocationState extends State<Location> {
   bool _editMode = false;
 
   LocationDatabase? _db;
+
+  final List<UserLocation> _locations = [];
 
   @override
   void initState() {
@@ -44,15 +43,8 @@ class _LocationState extends State<Location> {
   }
 
   void _setLocationsFromDatabase(List<UserLocation> locations) async {
-    // TODO #4: Once you have the inserts and deletes logic,
-    // figure out how to use the existing getLocations function to get a list of locations from the database
-    // assign those locations to widget.locations
-    // This will only be called by initState when the app loads
-
-    // TODO #5: Test everything!
-    // Make sure you can add locations, close the app, reopen and make sure the locations persist.
-    // Make sure you can delete locations, close the app, reopen and make sure the deletions persist.
-    // Be sure to test deletions from the beginning, middle, and end of the locations
+    _locations.addAll(locations);
+  
   }
 
   void _insertLocationIntoDatabase(UserLocation location) async {
@@ -83,7 +75,8 @@ class _LocationState extends State<Location> {
 
   // When an item from the list is tapped, set the current location to whichever one was tapped
   void tapList(index) {
-    widget.setLocation(widget.locations.elementAt(index));
+    widget.closeEndDrawer!();
+    widget.setLocation(_locations.elementAt(index));
   }
 
   // There are two ways to add the location
@@ -107,8 +100,8 @@ class _LocationState extends State<Location> {
   void updateLocation(UserLocation location) {
     widget.setLocation(location);
     setState(() {
-      if (!widget.locations.contains(location)) {
-        widget.locations.add(location);
+      if (!_locations.contains(location)) {
+        _locations.add(location);
         _insertLocationIntoDatabase(location);
       }
     });
@@ -117,14 +110,14 @@ class _LocationState extends State<Location> {
   // Delete location removes the location from the list by index
   void deleteLocation(index) {
     setState(() {
-      _deleteLocationFromDatabase(widget.locations.elementAt(index));
-      widget.locations.removeAt(index);
+      _deleteLocationFromDatabase(_locations.elementAt(index));
+      _locations.removeAt(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.locations.isNotEmpty ? savedListColumn() : userInput();
+    return _locations.isNotEmpty ? savedListColumn() : userInput();
   }
 
   Column savedListColumn() {
@@ -152,7 +145,7 @@ class _LocationState extends State<Location> {
   }
 
   ListView locationsListWidget() => ListView.builder(
-      itemCount: widget.locations.length,
+      itemCount: _locations.length,
       itemBuilder: (context, index) => ListTile(
           title: SizedBox(height: 25, child: listItemText(index)),
           onTap: () {
@@ -165,7 +158,7 @@ class _LocationState extends State<Location> {
             width: 200,
             child: FittedBox(
               child: Text(
-                  "${widget.locations.elementAt(index).city}, ${widget.locations.elementAt(index).state}, ${widget.locations.elementAt(index).zip}"),
+                  "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}"),
             ),
           ),
           (_editMode)

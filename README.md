@@ -126,3 +126,20 @@ update the Text() return to display the location.city, location.state, location.
     When a user deletes a location, it should be deleted from the database.
     The location rows should be called from the database during initState() and used to update the widget.locations list.
     This should automatically populate saved locations.
+
+
+### 3/5/24
+
+    Now it's time to make the project your own!
+
+    Fork the repository, and start working on making the project your own. All of the currently existing functionality should suffice, but feel free to add/modify as needed.
+
+    Look over the code. 
+    
+    Inspect the lib folder, look through each of the components. Try to identify where the components lie in the actual app. 
+
+    Look over the models. How are the models used? What information do they encapsulate?
+
+    Look over main.dart. There's a lot there! Is there anything you might encapsulate into a different file?
+
+    Make a plan: What do you think you can reasonably accomplish in 3-4 hours of in-class work? Perhaps you mainly want to focus on the aesthetics. Where can you find assets? How can you incorporate them conditionally?
