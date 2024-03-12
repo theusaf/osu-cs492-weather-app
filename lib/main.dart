@@ -28,22 +28,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<SharedPreferences>(
-      create: (BuildContext context) {
-        return prefs;
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: notifier,
+      builder: (_, mode, __) {
+        return MaterialApp(
+          title: 'CS 492 Weather App',
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: mode,
+          home: MyHomePage(
+              title: "CS492 Weather App", notifier: notifier, prefs: prefs),
+        );
       },
-      child: ValueListenableBuilder<ThemeMode>(
-          valueListenable: notifier,
-          builder: (_, mode, __) {
-            return MaterialApp(
-              title: 'CS 492 Weather App',
-              theme: ThemeData.light(),
-              darkTheme: ThemeData.dark(),
-              themeMode: mode,
-              home: MyHomePage(
-                  title: "CS492 Weather App", notifier: notifier, prefs: prefs),
-            );
-          }),
     );
   }
 }
