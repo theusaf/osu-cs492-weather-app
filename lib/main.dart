@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'models/user_location.dart';
@@ -26,24 +28,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemeMode>(
-        valueListenable: notifier,
-        builder: (_, mode, __) {
-          return MaterialApp(
-            title: 'CS 492 Weather App',
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode: mode,
-            home: MyHomePage(title: "CS492 Weather App", notifier: notifier),
-          );
-        });
+    return Provider<SharedPreferences>(
+      create: (BuildContext context) {
+        return prefs;
+      },
+      child: ValueListenableBuilder<ThemeMode>(
+          valueListenable: notifier,
+          builder: (_, mode, __) {
+            return MaterialApp(
+              title: 'CS 492 Weather App',
+              theme: ThemeData.light(),
+              darkTheme: ThemeData.dark(),
+              themeMode: mode,
+              home: MyHomePage(
+                  title: "CS492 Weather App", notifier: notifier, prefs: prefs),
+            );
+          }),
+    );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   final String title;
   final ValueNotifier<ThemeMode> notifier;
-  const MyHomePage({super.key, required this.title, required this.notifier});
+  final SharedPreferences prefs;
+  const MyHomePage({
+    super.key,
+    required this.title,
+    required this.notifier,
+    required this.prefs,
+  });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -109,16 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _initMode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? light = prefs.getBool("light");
-    String? locationString = prefs.getString("location");
-
-    if (light != null) {
-      setState(() {
-        _light = light;
-        _setTheme(_light);
-      });
-    }
+    String? locationString = widget.prefs.getString("location");
 
     if (locationString != null) {
       setLocation(UserLocation.fromJson(jsonDecode(locationString)));
@@ -130,8 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _light = value;
       _setTheme(value);
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("light", value);
+    widget.prefs.setBool("light", value);
   }
 
   void _setTheme(value) {
