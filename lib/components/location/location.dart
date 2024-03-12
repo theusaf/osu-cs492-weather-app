@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../../models/user_location.dart';
 import '../../models/location_database.dart';
 
@@ -162,12 +164,16 @@ class _LocationState extends State<Location> {
             tapList(index);
           }));
 
-  Row listItemText(int index) => Row(
+  Widget listItemText(int index) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-              "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}"),
+          SizedBox(
+            width: 200,
+            child: Text(
+              "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}",
+            ),
+          ),
           if (_editMode)
             IconButton(
                 visualDensity: VisualDensity.compact,
