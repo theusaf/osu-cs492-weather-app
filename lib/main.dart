@@ -9,26 +9,32 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const sqlCreateDatabase = 'assets/sql/create.sql';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  runApp(MyApp(prefs: prefs));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  MyApp({super.key, required this.prefs}) {
+    notifier.value =
+        prefs.getBool("light") == false ? ThemeMode.dark : ThemeMode.light;
+  }
 
-  final ValueNotifier<ThemeMode> _notifier = ValueNotifier(ThemeMode.light);
+  final SharedPreferences prefs;
+  final ValueNotifier<ThemeMode> notifier = ValueNotifier(ThemeMode.light);
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ThemeMode>(
-        valueListenable: _notifier,
+        valueListenable: notifier,
         builder: (_, mode, __) {
           return MaterialApp(
             title: 'CS 492 Weather App',
             theme: ThemeData.light(),
             darkTheme: ThemeData.dark(),
             themeMode: mode,
-            home: MyHomePage(title: "CS492 Weather App", notifier: _notifier),
+            home: MyHomePage(title: "CS492 Weather App", notifier: notifier),
           );
         });
   }
@@ -53,20 +59,16 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _location = location;
       _getForecasts();
-      _setLocationPref(location);
     });
-  }
-
-  void _setLocationPref(UserLocation location) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("location", location.toJsonString());
   }
 
   void _getForecasts() async {
     if (_location != null) {
       // We collect both the twice-daily forecasts and the hourly forecasts
-      List<WeatherForecast> forecasts = await getWeatherForecasts(_location!, false);
-      List<WeatherForecast> forecastsHourly = await getWeatherForecasts(_location!, true);
+      List<WeatherForecast> forecasts =
+          await getWeatherForecasts(_location!, false);
+      List<WeatherForecast> forecastsHourly =
+          await getWeatherForecasts(_location!, true);
       setState(() {
         _forecasts = forecasts;
         _forecastsHourly = forecastsHourly;
@@ -81,7 +83,6 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WeatherForecast> getForecastsHourly() {
     return _forecastsHourly;
   }
-
 
   UserLocation? getLocation() {
     return _location;
