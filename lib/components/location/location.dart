@@ -21,7 +21,7 @@ class Location extends StatefulWidget {
 class _LocationState extends State<Location> {
   // Edit mode allows user to delete stored locations
   bool _editMode = false;
-
+  int isLoading = 0;
   LocationDatabase? _db;
 
   final List<UserLocation> _locations = [];
@@ -81,15 +81,25 @@ class _LocationState extends State<Location> {
   // There are two ways to add the location
   // First, if the user enters text into the text boxes, geocoding will attempt to find it.
   void addLocationButtonPressed() async {
+    setState(() {
+      isLoading = 1;
+    });
     UserLocation? location = await getLocationFromAddress(
         cityController.text, stateController.text, zipController.text);
     if (location != null) {
       updateLocation(location);
+    } else {
+      setState(() {
+        isLoading = 0;
+      });
     }
   }
 
   // Second, if the user taps the "Add GPS Location" button, the location is found via geolocation
   void addLocationGPSButtonPressed() async {
+    setState(() {
+      isLoading = 2;
+    });
     UserLocation location = await getLocationFromGPS();
     updateLocation(location);
   }
@@ -99,6 +109,7 @@ class _LocationState extends State<Location> {
   void updateLocation(UserLocation location) {
     widget.setLocation(location);
     setState(() {
+      isLoading = 0;
       if (!_locations.contains(location)) {
         _locations.add(location);
         _insertLocationIntoDatabase(location);
@@ -187,15 +198,34 @@ class _LocationState extends State<Location> {
         ),
         ElevatedButton(
           onPressed: addLocationButtonPressed,
-          child: const Text('Add Manual Location'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Add Manual Location'),
+              if (isLoading == 1)
+                const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: 10),
+                    SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator()),
+                  ],
+                )
+            ],
+          ),
         ),
         ElevatedButton(
           onPressed: addLocationGPSButtonPressed,
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Add Current Location'),
-              Icon(Icons.location_on_outlined),
+              const Text('Add Current Location'),
+              const Icon(Icons.location_on_outlined),
+              if (isLoading == 2)
+                const SizedBox(
+                    width: 10, height: 10, child: CircularProgressIndicator())
             ],
           ),
         ),
