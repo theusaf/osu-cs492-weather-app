@@ -110,8 +110,11 @@ class LocationTextWidget extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
         width: 500,
-        child: Text("${location.city}, ${location.state}, ${location.zip}",
-            style: Theme.of(context).textTheme.headlineSmall),
+        child: Text(
+          "${location.city}, ${location.state}, ${location.zip}",
+          style: Theme.of(context).textTheme.headlineSmall,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -136,8 +139,7 @@ class LocationWidget extends StatelessWidget {
             child: Text("Requires a location to begin"),
           ),
           Location(
-              setLocation: widget.setLocation,
-              getLocation: widget.getLocation),
+              setLocation: widget.setLocation, getLocation: widget.getLocation),
         ],
       ),
     );

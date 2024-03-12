@@ -146,30 +146,28 @@ class _LocationState extends State<Location> {
   ListView locationsListWidget() => ListView.builder(
       itemCount: _locations.length,
       itemBuilder: (context, index) => ListTile(
-          title: SizedBox(height: 25, child: listItemText(index)),
+          title: listItemText(index),
           onTap: () {
             tapList(index);
           }));
 
   Row listItemText(int index) => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 200,
-            child: FittedBox(
-              child: Text(
-                  "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}"),
-            ),
-          ),
-          (_editMode)
-              ? IconButton(
-                  onPressed: () {
-                    deleteLocation(index);
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Color.fromRGBO(227, 18, 67, 1.0),
-                  ))
-              : const SizedBox()
+          Text(
+              "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}"),
+          if (_editMode)
+            IconButton(
+                visualDensity: VisualDensity.compact,
+                iconSize: 30,
+                onPressed: () {
+                  deleteLocation(index);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Color.fromRGBO(227, 18, 67, 1.0),
+                ))
         ],
       );
 
