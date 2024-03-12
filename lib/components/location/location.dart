@@ -44,7 +44,6 @@ class _LocationState extends State<Location> {
 
   void _setLocationsFromDatabase(List<UserLocation> locations) async {
     _locations.addAll(locations);
-  
   }
 
   void _insertLocationIntoDatabase(UserLocation location) async {
@@ -177,18 +176,6 @@ class _LocationState extends State<Location> {
   Column userInput() {
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: addLocationGPSButtonPressed,
-          child: const SizedBox(
-            width: 140,
-            child: Row(
-              children: [
-                Text('Add GPS Location'),
-                Icon(Icons.location_on_outlined),
-              ],
-            ),
-          ),
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -203,6 +190,16 @@ class _LocationState extends State<Location> {
         ElevatedButton(
           onPressed: addLocationButtonPressed,
           child: const Text('Add Manual Location'),
+        ),
+        ElevatedButton(
+          onPressed: addLocationGPSButtonPressed,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Add Current Location'),
+              Icon(Icons.location_on_outlined),
+            ],
+          ),
         ),
       ],
     );
