@@ -76,7 +76,7 @@ class DescriptionWidget extends StatelessWidget {
         return Center(
             child: forecasts.isEmpty
                 ? Shimmer.fromColors(
-                    baseColor: colorScheme.onBackground,
+                    baseColor: colorScheme.onBackground.withAlpha(200),
                     highlightColor: Colors.grey.shade400,
                     child: Container(
                       width: 100,
@@ -108,7 +108,7 @@ class TemperatureWidget extends StatelessWidget {
         return Center(
           child: forecasts.isEmpty
               ? Shimmer.fromColors(
-                  baseColor: colorScheme.onBackground,
+                  baseColor: colorScheme.onBackground.withAlpha(200),
                   highlightColor: Colors.grey.shade400,
                   child: Container(
                     width: 80,

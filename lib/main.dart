@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   UserLocation? _location;
 
   void setLocation(UserLocation location) async {
+    widget.prefs.setString('location', location.toJsonString());
     setState(() {
       _location = location;
       _getForecasts();
