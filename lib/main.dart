@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
       valueListenable: notifier,
       builder: (_, mode, __) {
         return MaterialApp(
-          title: 'CS 492 Weather App',
+          title: 'GreenWeather',
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: mode,
           home: MyHomePage(
-              title: "CS492 Weather App", notifier: notifier, prefs: prefs),
+              title: "GreenWeather", notifier: notifier, prefs: prefs),
         );
       },
     );
