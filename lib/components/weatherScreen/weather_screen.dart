@@ -114,7 +114,7 @@ class LocationTextWidget extends StatelessWidget {
       child: SizedBox(
         width: 500,
         child: Text(
-          "${location.city}, ${location.state}, ${location.zip}",
+          '${location.city}, ${location.state}, ${location.zip}',
           style: Theme.of(context).textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
@@ -141,7 +141,7 @@ class NoLocationDisplay extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "No locations saved. Open the settings to add locations.",
+                'No locations saved. Open the settings to add locations.',
                 style: textTheme.titleMedium,
               ),
             ),
@@ -150,7 +150,7 @@ class NoLocationDisplay extends StatelessWidget {
                 widget.scaffoldKey.currentState!.openEndDrawer();
               },
               child: Text(
-                "Open Settings",
+                'Open Settings',
                 style: textTheme.labelLarge,
               ),
             )

@@ -9,7 +9,7 @@ import 'dart:convert';
 // Displaying location to user (city, state, zip)
 // Finding Forecast information in Weather API (latitude, Longitude)
 
-const allowedNation = "United States";
+const allowedNation = 'United States';
 
 class UserLocation {
   double latitude;
@@ -41,11 +41,11 @@ class UserLocation {
 
   String toJsonString() {
     Map<String, dynamic> mappedObject = {
-      "latitude": latitude,
-      "longitude": longitude,
-      "city": city,
-      "state": state,
-      "zip": zip
+      'latitude': latitude,
+      'longitude': longitude,
+      'city': city,
+      'state': state,
+      'zip': zip
     };
 
     return jsonEncode(mappedObject);
@@ -75,7 +75,7 @@ Future<UserLocation?> getLocationFromAddress(
     String city, String state, String zip) async {
   // async function that delivers a UserLocation using the city, state, and/or zip
 
-  String addressString = "$city $state $zip";
+  String addressString = '$city $state $zip';
 
   // geocoding can potentially return locations with only partial addresses
   try {
@@ -98,10 +98,10 @@ Future<UserLocation> getLocationFromCoords(
     double latitude, double longitude) async {
   // async function that delivers a UserLocation using latitude and longitude
 
-  String city = "";
-  String state = "";
-  String zip = "";
-  String country = "";
+  String city = '';
+  String state = '';
+  String zip = '';
+  String country = '';
 
   List<Placemark> placemarks =
       await placemarkFromCoordinates(latitude, longitude);
@@ -113,22 +113,22 @@ Future<UserLocation> getLocationFromCoords(
 
   // Loops through the locations attempting to find a city, state, and zip in the address information
   for (int i = 0; i < placemarks.length; i++) {
-    if (city == "") {
+    if (city == '') {
       city = placemarks[i].locality!;
     }
-    if (state == "") {
+    if (state == '') {
       state = placemarks[i].administrativeArea!;
     }
-    if (zip == "") {
+    if (zip == '') {
       zip = placemarks[i].postalCode!;
     }
-    if (country == "") {
+    if (country == '') {
       country = placemarks[i].country!;
     }
   }
 
   if (country != allowedNation) {
-    Future.error("Error: Location must be in $allowedNation.");
+    Future.error('Error: Location must be in $allowedNation.');
   }
 
   return UserLocation(

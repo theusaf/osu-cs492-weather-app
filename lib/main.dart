@@ -20,7 +20,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key, required this.prefs}) {
     notifier.value =
-        prefs.getBool("light") == false ? ThemeMode.dark : ThemeMode.light;
+        prefs.getBool('light') == false ? ThemeMode.dark : ThemeMode.light;
   }
 
   final SharedPreferences prefs;
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           darkTheme: darkTheme,
           themeMode: mode,
           home: MyHomePage(
-              title: "GreenWeather", notifier: notifier, prefs: prefs),
+              title: 'GreenWeather', notifier: notifier, prefs: prefs),
         );
       },
     );
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _initMode() async {
-    String? locationString = widget.prefs.getString("location");
+    String? locationString = widget.prefs.getString('location');
 
     if (locationString != null) {
       setLocation(UserLocation.fromJson(jsonDecode(locationString)));
@@ -131,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _light = value;
       _setTheme(value);
     });
-    widget.prefs.setBool("light", value);
+    widget.prefs.setBool('light', value);
   }
 
   void _setTheme(value) {
@@ -171,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(_light ? "Light Mode" : "Dark Mode",
+          Text(_light ? 'Light Mode' : 'Dark Mode',
               style: Theme.of(context).textTheme.labelLarge),
           Transform.scale(
             scale: 0.5,
@@ -190,9 +190,9 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
         return Column(
           children: [
-            SettingsHeaderText(context: context, text: "Settings:"),
+            SettingsHeaderText(context: context, text: 'Settings:'),
             modeToggle(),
-            SettingsHeaderText(context: context, text: "My Locations:"),
+            SettingsHeaderText(context: context, text: 'My Locations:'),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Location(
@@ -206,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   foregroundColor: colorScheme.onSecondary,
                 ),
                 onPressed: _closeEndDrawer,
-                child: const Text("Close Settings"))
+                child: const Text('Close Settings'))
           ],
         );
       }),

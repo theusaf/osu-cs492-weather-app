@@ -97,7 +97,7 @@ class _LocationState extends State<Location> {
     }
   }
 
-  // Second, if the user taps the "Add GPS Location" button, the location is found via geolocation
+  // Second, if the user taps the 'Add GPS Location' button, the location is found via geolocation
   void addLocationGPSButtonPressed() async {
     setState(() {
       isLoading = 2;
@@ -146,7 +146,7 @@ class _LocationState extends State<Location> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Saved Locations:"),
+        const Text('Saved Locations:'),
         IconButton(
           icon: const Icon(Icons.edit),
           onPressed: toggleEditMode,
@@ -171,7 +171,7 @@ class _LocationState extends State<Location> {
           SizedBox(
             width: 200,
             child: Text(
-              "${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}",
+              '${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}',
             ),
           ),
           if (_editMode)
@@ -196,11 +196,11 @@ class _LocationState extends State<Location> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LocationText(
-                  labelText: "City", width: 80.0, controller: cityController),
+                  labelText: 'City', width: 80.0, controller: cityController),
               LocationText(
-                  labelText: "State", width: 60.0, controller: stateController),
+                  labelText: 'State', width: 60.0, controller: stateController),
               LocationText(
-                  labelText: "Zip", width: 70.0, controller: zipController)
+                  labelText: 'Zip', width: 70.0, controller: zipController)
             ],
           ),
           ElevatedButton(

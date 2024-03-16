@@ -64,14 +64,14 @@ Future<List<WeatherForecast>> getWeatherForecasts(
   String long = location.longitude.toStringAsFixed(2);
 
   // send a request to the weather api to get forecast details
-  String forecastUrl = "https://api.weather.gov/points/$lat,$long";
+  String forecastUrl = 'https://api.weather.gov/points/$lat,$long';
   http.Response forecastResponse = await http.get(Uri.parse(forecastUrl));
   final Map<String, dynamic> forecastJson = jsonDecode(forecastResponse.body);
 
   // grabs the forecasts url from the json response
   final String currentForecastsUrl = hourly
-      ? forecastJson["properties"]["forecastHourly"]
-      : forecastJson["properties"]["forecast"];
+      ? forecastJson['properties']['forecastHourly']
+      : forecastJson['properties']['forecast'];
 
   // send another request to the API which will return the specifics of the twice-daily forecasts
   http.Response currentForecastsResponse =
@@ -80,7 +80,7 @@ Future<List<WeatherForecast>> getWeatherForecasts(
       jsonDecode(currentForecastsResponse.body);
 
   // gets the list of forecasts from the forecast request
-  List<dynamic> forecastJsons = currentForecastsJson["properties"]["periods"];
+  List<dynamic> forecastJsons = currentForecastsJson['properties']['periods'];
 
   // uses json data to create list of WeatherForecast objects
   List<WeatherForecast> forecasts = [];
