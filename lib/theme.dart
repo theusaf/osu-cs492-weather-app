@@ -70,7 +70,7 @@ final lightTheme = ThemeData.from(
     onSecondary: Colors.white,
     surface: Colors.lightGreen.shade100,
     onSurface: Colors.black,
-    background: Colors.white,
+    background: Colors.green.shade200,
     onBackground: Colors.black,
     error: Colors.red,
     onError: Colors.white,
