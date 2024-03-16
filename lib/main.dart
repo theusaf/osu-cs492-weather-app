@@ -189,26 +189,28 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget settingsDrawer() {
     return SafeArea(
       child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
-        return Column(
-          children: [
-            SettingsHeaderText(context: context, text: 'Settings:'),
-            modeToggle(),
-            SettingsHeaderText(context: context, text: 'My Locations:'),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Location(
-                  setLocation: setLocation,
-                  getLocation: getLocation,
-                  closeEndDrawer: _closeEndDrawer),
-            ),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorScheme.secondary,
-                  foregroundColor: colorScheme.onSecondary,
-                ),
-                onPressed: _closeEndDrawer,
-                child: const Text('Close Settings'))
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              SettingsHeaderText(context: context, text: 'Settings:'),
+              modeToggle(),
+              SettingsHeaderText(context: context, text: 'My Locations:'),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Location(
+                    setLocation: setLocation,
+                    getLocation: getLocation,
+                    closeEndDrawer: _closeEndDrawer),
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.secondary,
+                    foregroundColor: colorScheme.onSecondary,
+                  ),
+                  onPressed: _closeEndDrawer,
+                  child: const Text('Close Settings'))
+            ],
+          ),
         );
       }),
     );
