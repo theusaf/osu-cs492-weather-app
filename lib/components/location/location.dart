@@ -235,7 +235,7 @@ class _LocationState extends State<Location> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Add Manual Location', style: textTheme.labelLarge),
+                Text('Add Manual Location', style: textTheme.labelMedium),
                 if (isLoading == 1)
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -261,7 +261,7 @@ class _LocationState extends State<Location> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Add Current Location', style: textTheme.labelLarge),
+                Text('Add Current Location', style: textTheme.labelMedium),
                 const Icon(Icons.location_on_outlined),
                 if (isLoading == 2)
                   SizedBox(

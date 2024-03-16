@@ -196,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 SettingsHeaderText(context: context, text: 'Settings:'),
                 modeToggle(),
-                SettingsHeaderText(context: context, text: 'My Locations:'),
+                SettingsHeaderText(context: context, text: 'Locations:'),
                 Location(
                     setLocation: setLocation,
                     getLocation: getLocation,
