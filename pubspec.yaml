@@ -28,7 +28,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    # sql
     - assets/sql/create.sql
     - assets/sql/insert.sql
     - assets/sql/get_all.sql
     - assets/sql/delete.sql
+    # images
+    - assets/images/confused.png

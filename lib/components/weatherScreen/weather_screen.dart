@@ -1,5 +1,6 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
+import 'package:flutter/widgets.dart';
 import '../../models/user_location.dart';
 import 'package:flutter/material.dart';
 
@@ -133,30 +134,43 @@ class NoLocationDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return LayoutBuilder(builder: (context, constraints) {
         return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'No locations saved. Open the settings to add locations.',
-                style: textTheme.titleMedium,
+            Container(
+              constraints: BoxConstraints(maxHeight: constraints.maxHeight / 2),
+              child: Image.asset('assets/images/confused.png'),
+            ),
+            SizedBox(
+              height: 125,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'No locations saved. Open the settings to add locations.',
+                      style: textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      widget.scaffoldKey.currentState!.openEndDrawer();
+                    },
+                    child: Text(
+                      'Open Settings',
+                      style: textTheme.labelLarge,
+                    ),
+                  )
+                ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                widget.scaffoldKey.currentState!.openEndDrawer();
-              },
-              child: Text(
-                'Open Settings',
-                style: textTheme.labelLarge,
-              ),
-            )
           ],
         );
-      }),
-    );
+      });
+    });
   }
 }
