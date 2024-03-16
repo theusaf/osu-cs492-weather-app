@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../../models/user_location.dart';
 import '../../models/location_database.dart';
 
@@ -10,11 +9,12 @@ class Location extends StatefulWidget {
   final Function getLocation;
   final Function? closeEndDrawer;
 
-  const Location(
-      {super.key,
-      required this.setLocation,
-      required this.getLocation,
-      this.closeEndDrawer});
+  const Location({
+    super.key,
+    required this.setLocation,
+    required this.getLocation,
+    this.closeEndDrawer,
+  });
 
   @override
   State<Location> createState() => _LocationState();
@@ -188,55 +188,67 @@ class _LocationState extends State<Location> {
         ],
       );
 
-  Column userInput() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LocationText(
-                labelText: "City", width: 80.0, controller: cityController),
-            LocationText(
-                labelText: "State", width: 60.0, controller: stateController),
-            LocationText(
-                labelText: "Zip", width: 70.0, controller: zipController)
-          ],
-        ),
-        ElevatedButton(
-          onPressed: addLocationButtonPressed,
-          child: Row(
+  Widget userInput() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Column(
+        children: [
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Add Manual Location'),
-              if (isLoading == 1)
-                const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: 10),
-                    SizedBox(
-                        width: 10,
-                        height: 10,
-                        child: CircularProgressIndicator()),
-                  ],
-                )
+              LocationText(
+                  labelText: "City", width: 80.0, controller: cityController),
+              LocationText(
+                  labelText: "State", width: 60.0, controller: stateController),
+              LocationText(
+                  labelText: "Zip", width: 70.0, controller: zipController)
             ],
           ),
-        ),
-        ElevatedButton(
-          onPressed: addLocationGPSButtonPressed,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Add Current Location'),
-              const Icon(Icons.location_on_outlined),
-              if (isLoading == 2)
-                const SizedBox(
-                    width: 10, height: 10, child: CircularProgressIndicator())
-            ],
+          ElevatedButton(
+            onPressed: addLocationButtonPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colorScheme.secondary,
+              foregroundColor: colorScheme.onSecondary,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Add Manual Location'),
+                if (isLoading == 1)
+                  const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(width: 10),
+                      SizedBox(
+                          width: 10,
+                          height: 10,
+                          child: CircularProgressIndicator(color: Colors.blue)),
+                    ],
+                  )
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+          ElevatedButton(
+            onPressed: addLocationGPSButtonPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colorScheme.secondary,
+              foregroundColor: colorScheme.onSecondary,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Add Current Location'),
+                const Icon(Icons.location_on_outlined),
+                if (isLoading == 2)
+                  const SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator(color: Colors.blue))
+              ],
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cs492_weather_app/theme.dart';
+import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'models/user_location.dart';
@@ -182,24 +183,31 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  SafeArea settingsDrawer() {
+  Widget settingsDrawer() {
     return SafeArea(
-      child: Column(
-        children: [
-          SettingsHeaderText(context: context, text: "Settings:"),
-          modeToggle(),
-          SettingsHeaderText(context: context, text: "My Locations:"),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Location(
-                setLocation: setLocation,
-                getLocation: getLocation,
-                closeEndDrawer: _closeEndDrawer),
-          ),
-          ElevatedButton(
-              onPressed: _closeEndDrawer, child: const Text("Close Settings"))
-        ],
-      ),
+      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Column(
+          children: [
+            SettingsHeaderText(context: context, text: "Settings:"),
+            modeToggle(),
+            SettingsHeaderText(context: context, text: "My Locations:"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Location(
+                  setLocation: setLocation,
+                  getLocation: getLocation,
+                  closeEndDrawer: _closeEndDrawer),
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colorScheme.secondary,
+                  foregroundColor: colorScheme.onSecondary,
+                ),
+                onPressed: _closeEndDrawer,
+                child: const Text("Close Settings"))
+          ],
+        );
+      }),
     );
   }
 }

@@ -65,7 +65,7 @@ final lightTheme = ThemeData.from(
   textTheme: GoogleFonts.convergenceTextTheme(_textThemeBase),
   colorScheme: ColorScheme.light(
     primary: Colors.green,
-    secondary: Colors.greenAccent,
+    secondary: Colors.green.shade400,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     surface: Colors.lightGreen.shade100,
@@ -81,7 +81,7 @@ final darkTheme = ThemeData.from(
   textTheme: GoogleFonts.convergenceTextTheme(_textThemeBase),
   colorScheme: ColorScheme.dark(
     primary: Colors.green,
-    secondary: Colors.greenAccent,
+    secondary: Colors.green.shade600,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     surface: Colors.green.shade700,
