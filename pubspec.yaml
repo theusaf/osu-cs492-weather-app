@@ -12,13 +12,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   geolocator: ^11.0.0
-  geocoding: ^2.1.1
+  geocoding: ^3.0.0
   http: ^1.2.0
   shared_preferences: ^2.2.2
   sqflite: ^2.3.2
   provider: ^6.1.2
   dots_indicator: ^3.0.0
   google_fonts: ^6.2.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,5 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
-import 'package:flutter/widgets.dart';
 import '../../models/user_location.dart';
 import 'package:flutter/material.dart';
 
@@ -41,11 +40,12 @@ class ForecastWidget extends StatelessWidget {
   final List<WeatherForecast> forecasts;
   final BuildContext context;
 
-  const ForecastWidget(
-      {super.key,
-      required this.context,
-      required this.location,
-      required this.forecasts});
+  const ForecastWidget({
+    super.key,
+    required this.context,
+    required this.location,
+    required this.forecasts,
+  });
 
   @override
   Widget build(BuildContext context) {
