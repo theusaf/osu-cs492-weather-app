@@ -1,5 +1,6 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../models/user_location.dart';
 import 'package:flutter/material.dart';
 
@@ -69,12 +70,24 @@ class DescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 25,
-      width: 500,
-      child: Center(
-          child: Text(forecasts.elementAt(0).shortForecast,
-              style: Theme.of(context).textTheme.bodyMedium)),
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 25),
+      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Center(
+            child: forecasts.isEmpty
+                ? Shimmer.fromColors(
+                    baseColor: colorScheme.onBackground,
+                    highlightColor: Colors.grey.shade400,
+                    child: Container(
+                      width: 100,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: colorScheme.onBackground,
+                      ),
+                    ))
+                : Text(forecasts.elementAt(0).shortForecast,
+                    style: textTheme.bodyMedium));
+      }),
     );
   }
 }
@@ -89,13 +102,25 @@ class TemperatureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 500,
-      height: 60,
-      child: Center(
-        child: Text('${forecasts.elementAt(0).temperature}º',
-            style: Theme.of(context).textTheme.displayLarge),
-      ),
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 60),
+      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Center(
+          child: forecasts.isEmpty
+              ? Shimmer.fromColors(
+                  baseColor: colorScheme.onBackground,
+                  highlightColor: Colors.grey.shade400,
+                  child: Container(
+                    width: 80,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: colorScheme.onBackground,
+                    ),
+                  ))
+              : Text('${forecasts.elementAt(0).temperature}°',
+                  style: textTheme.displayLarge),
+        );
+      }),
     );
   }
 }
@@ -112,8 +137,8 @@ class LocationTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: SizedBox(
-        width: 500,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 500),
         child: Text(
           '${location.city}, ${location.state}, ${location.zip}',
           style: Theme.of(context).textTheme.headlineSmall,
