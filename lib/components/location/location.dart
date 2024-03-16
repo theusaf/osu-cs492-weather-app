@@ -142,51 +142,65 @@ class _LocationState extends State<Location> {
     );
   }
 
-  Row savedLocation() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Saved Locations:'),
-        IconButton(
-          icon: const Icon(Icons.edit),
-          onPressed: toggleEditMode,
-          color: const Color.fromRGBO(18, 98, 227, 1.0),
-        )
-      ],
-    );
-  }
-
-  ListView locationsListWidget() => ListView.builder(
-      itemCount: _locations.length,
-      itemBuilder: (context, index) => ListTile(
-          title: listItemText(index),
-          onTap: () {
-            tapList(index);
-          }));
-
-  Widget listItemText(int index) => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget savedLocation() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 200,
-            child: Text(
-              '${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}',
-            ),
-          ),
-          if (_editMode)
-            IconButton(
-                visualDensity: VisualDensity.compact,
-                iconSize: 30,
-                onPressed: () {
-                  deleteLocation(index);
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  color: Color.fromRGBO(227, 18, 67, 1.0),
-                ))
+          const Text('Saved Locations:'),
+          IconButton(
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(Icons.edit),
+            onPressed: toggleEditMode,
+            color: colorScheme.onSurface,
+          )
         ],
       );
+    });
+  }
+
+  Widget locationsListWidget() =>
+      ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Container(
+          decoration: BoxDecoration(
+            color: colorScheme.background,
+          ),
+          child: ListView.builder(
+              itemCount: _locations.length,
+              itemBuilder: (context, index) => ListTile(
+                  title: listItemText(index),
+                  onTap: () {
+                    tapList(index);
+                  })),
+        );
+      });
+
+  Widget listItemText(int index) =>
+      ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 200,
+              child: Text(
+                '${_locations.elementAt(index).city}, ${_locations.elementAt(index).state}, ${_locations.elementAt(index).zip}',
+              ),
+            ),
+            if (_editMode)
+              IconButton(
+                  visualDensity: VisualDensity.compact,
+                  iconSize: 30,
+                  onPressed: () {
+                    deleteLocation(index);
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: colorScheme.error,
+                  ))
+          ],
+        );
+      });
 
   Widget userInput() {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
@@ -214,14 +228,16 @@ class _LocationState extends State<Location> {
               children: [
                 const Text('Add Manual Location'),
                 if (isLoading == 1)
-                  const Row(
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       SizedBox(
-                          width: 10,
-                          height: 10,
-                          child: CircularProgressIndicator(color: Colors.blue)),
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator(
+                            color: colorScheme.onSurface),
+                      ),
                     ],
                   )
               ],
@@ -239,10 +255,12 @@ class _LocationState extends State<Location> {
                 const Text('Add Current Location'),
                 const Icon(Icons.location_on_outlined),
                 if (isLoading == 2)
-                  const SizedBox(
-                      width: 10,
-                      height: 10,
-                      child: CircularProgressIndicator(color: Colors.blue))
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child:
+                        CircularProgressIndicator(color: colorScheme.onSurface),
+                  )
               ],
             ),
           ),
