@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cs492_weather_app/theme.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
+import 'package:flutter/services.dart';
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'models/user_location.dart';
@@ -13,6 +14,7 @@ const sqlCreateDatabase = 'assets/sql/create.sql';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MyApp(prefs: prefs));
 }
