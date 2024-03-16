@@ -26,12 +26,12 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
-    return (widget.getLocation() != null && widget.getForecasts().isNotEmpty
+    return (widget.getLocation() != null
         ? ForecastWidget(
             context: context,
             location: widget.getLocation(),
             forecasts: widget.getForecastsHourly())
-        : LoadingLocationWidget(widget: widget));
+        : NoLocationDisplay(widget: widget));
   }
 }
 
@@ -123,8 +123,8 @@ class LocationTextWidget extends StatelessWidget {
   }
 }
 
-class LoadingLocationWidget extends StatelessWidget {
-  const LoadingLocationWidget({
+class NoLocationDisplay extends StatelessWidget {
+  const NoLocationDisplay({
     super.key,
     required this.widget,
   });
