@@ -1,4 +1,5 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
+import 'package:cs492_weather_app/util/math.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../models/user_location.dart';
@@ -10,6 +11,8 @@ class WeatherScreen extends StatefulWidget {
   final Function getForecastsHourly;
   final Function setLocation;
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String units;
+  final String unitType;
 
   const WeatherScreen({
     super.key,
@@ -18,6 +21,8 @@ class WeatherScreen extends StatefulWidget {
     required this.getForecastsHourly,
     required this.setLocation,
     required this.scaffoldKey,
+    required this.units,
+    required this.unitType,
   });
 
   @override
@@ -31,7 +36,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ? ForecastWidget(
             context: context,
             location: widget.getLocation(),
-            forecasts: widget.getForecastsHourly())
+            forecasts: widget.getForecastsHourly(),
+            unit: widget.units,
+            unitType: widget.unitType,
+          )
         : NoLocationDisplay(widget: widget));
   }
 }
@@ -40,22 +48,35 @@ class ForecastWidget extends StatelessWidget {
   final UserLocation location;
   final List<WeatherForecast> forecasts;
   final BuildContext context;
+  final String unit;
+  final String unitType;
 
   const ForecastWidget({
     super.key,
     required this.context,
     required this.location,
     required this.forecasts,
+    required this.unit,
+    required this.unitType,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        LocationTextWidget(location: location),
-        TemperatureWidget(forecasts: forecasts),
-        DescriptionWidget(forecasts: forecasts)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          LocationTextWidget(location: location),
+          TemperatureWidget(
+              forecasts: forecasts, unit: unit, unitType: unitType),
+          DescriptionWidget(forecasts: forecasts),
+          const SizedBox(
+            height: 50,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -96,9 +117,13 @@ class TemperatureWidget extends StatelessWidget {
   const TemperatureWidget({
     super.key,
     required this.forecasts,
+    required this.unit,
+    required this.unitType,
   });
 
   final List<WeatherForecast> forecasts;
+  final String unit;
+  final String unitType;
 
   @override
   Widget build(BuildContext context) {
@@ -117,11 +142,37 @@ class TemperatureWidget extends StatelessWidget {
                       color: colorScheme.onBackground,
                     ),
                   ))
-              : Text('${forecasts.elementAt(0).temperature}°',
-                  style: textTheme.displayLarge),
+              : displayContent(),
         );
       }),
     );
+  }
+
+  Widget displayContent() {
+    String tempString = '';
+    String tempTypeString = '';
+    double tempValue = forecasts.elementAt(0).temperature.toDouble();
+    switch (unit) {
+      case 'Celsius':
+        tempValue = fahrenheitToCelsius(tempValue);
+        break;
+      case 'Kelvin':
+        tempValue = fahrenheitToKelvin(tempValue);
+        break;
+      case 'Felcius':
+        tempValue = fahrenheitToFelcius(tempValue);
+        break;
+    }
+    if (unitType == 'degrees') {
+      tempString = tempValue.toStringAsFixed(0);
+      tempTypeString = '°';
+    } else {
+      tempString = degreesToRadians(tempValue).toStringAsFixed(3);
+      tempTypeString = ' rad';
+    }
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Text('$tempString$tempTypeString', style: textTheme.displayLarge);
+    });
   }
 }
 
@@ -141,7 +192,7 @@ class LocationTextWidget extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 500),
         child: Text(
           '${location.city}, ${location.state}, ${location.zip}',
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: Theme.of(context).textTheme.headlineMedium,
           textAlign: TextAlign.center,
         ),
       ),

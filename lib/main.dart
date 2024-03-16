@@ -177,6 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
         getForecastsHourly: getForecastsHourly,
         setLocation: setLocation,
         scaffoldKey: _scaffoldKey,
+        units: _temperatureUnit,
+        unitType: _temperatureUnitType,
       ),
       endDrawer: Drawer(
         child: settingsDrawer(),
