@@ -65,8 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WeatherForecast> _forecastsHourly = [];
   UserLocation? _location;
 
-  void setLocation(UserLocation location) async {
-    widget.prefs.setString('location', location.toJsonString());
+  void setLocation(UserLocation? location) async {
+    if (location != null) {
+      widget.prefs.setString('location', location.toJsonString());
+    } else {
+      widget.prefs.remove('location');
+    }
     setState(() {
       _location = location;
       _getForecasts();

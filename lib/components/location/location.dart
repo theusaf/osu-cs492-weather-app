@@ -121,10 +121,16 @@ class _LocationState extends State<Location> {
 
   // Delete location removes the location from the list by index
   void deleteLocation(index) {
+    final UserLocation location = _locations.elementAt(index);
     setState(() {
-      _deleteLocationFromDatabase(_locations.elementAt(index));
+      _deleteLocationFromDatabase(location);
       _locations.removeAt(index);
     });
+    if (_locations.isEmpty) {
+      widget.setLocation(null);
+    } else if (widget.getLocation() == location) {
+      widget.setLocation(_locations.elementAt(0));
+    }
   }
 
   @override
@@ -161,25 +167,29 @@ class _LocationState extends State<Location> {
     });
   }
 
-  Widget locationsListWidget() =>
-      ThemeBuilder(builder: (context, colorScheme, textTheme) {
-        return Container(
-          decoration: BoxDecoration(
-            color: colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: ListView.builder(
+  Widget locationsListWidget() => ThemeBuilder(
+        builder: (context, colorScheme, textTheme) {
+          return Container(
+            decoration: BoxDecoration(
+              color: colorScheme.background,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: ListView.builder(
               itemCount: _locations.length,
               itemBuilder: (context, index) => ListTile(
-                  title: listItemText(index),
-                  onTap: () {
-                    tapList(index);
-                  })),
-        );
-      });
+                title: listItemText(index),
+                onTap: () {
+                  tapList(index);
+                },
+              ),
+            ),
+          );
+        },
+      );
 
-  Widget listItemText(int index) =>
-      ThemeBuilder(builder: (context, colorScheme, textTheme) {
+  Widget listItemText(int index) {
+    return ThemeBuilder(
+      builder: (context, colorScheme, textTheme) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,18 +202,21 @@ class _LocationState extends State<Location> {
             ),
             if (_editMode)
               IconButton(
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 30,
-                  onPressed: () {
-                    deleteLocation(index);
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                    color: colorScheme.error,
-                  ))
+                visualDensity: VisualDensity.compact,
+                iconSize: 30,
+                onPressed: () {
+                  deleteLocation(index);
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: colorScheme.error,
+                ),
+              )
           ],
         );
-      });
+      },
+    );
+  }
 
   Widget userInput() {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
