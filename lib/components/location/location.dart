@@ -135,7 +135,10 @@ class _LocationState extends State<Location> {
   Column savedListColumn() {
     return Column(
       children: [
-        SizedBox(height: 160, child: userInput()),
+        Container(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: userInput(),
+        ),
         savedLocation(),
         SizedBox(height: 150, child: locationsListWidget()),
       ],
@@ -205,16 +208,23 @@ class _LocationState extends State<Location> {
   Widget userInput() {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LocationText(
-                  labelText: 'City', width: 80.0, controller: cityController),
-              LocationText(
-                  labelText: 'State', width: 60.0, controller: stateController),
-              LocationText(
-                  labelText: 'Zip', width: 70.0, controller: zipController)
+              LocationText(labelText: 'City', controller: cityController),
+              Flex(
+                direction: Axis.horizontal,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                      child: LocationText(
+                          labelText: 'State', controller: stateController)),
+                  LocationText(
+                      labelText: 'Zip', width: 100.0, controller: zipController)
+                ],
+              ),
             ],
           ),
           ElevatedButton(
@@ -274,11 +284,11 @@ class LocationText extends StatefulWidget {
   const LocationText(
       {super.key,
       required this.labelText,
-      required this.width,
+      this.width,
       required this.controller});
 
   final String labelText;
-  final double width;
+  final double? width;
   final TextEditingController controller;
 
   @override
