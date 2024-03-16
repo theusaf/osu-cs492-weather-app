@@ -45,16 +45,26 @@ class LocationDatabase {
     await _db.transaction((txn) async {
       String query = await rootBundle.loadString(sqlInsertPath);
 
-      List<dynamic> rawInsertParameters = [location.latitude, location.longitude, location.city, location.state, location.zip];
+      List<dynamic> rawInsertParameters = [
+        location.latitude,
+        location.longitude,
+        location.city,
+        location.state,
+        location.zip
+      ];
       await txn.rawInsert(query, rawInsertParameters);
     });
   }
 
   void deleteLocation(UserLocation location) async {
-     await _db.transaction((txn) async {
+    await _db.transaction((txn) async {
       String query = await rootBundle.loadString(sqlDeletePath);
 
-      List<dynamic> rawDeleteParameters = [location.city, location.state, location.zip];
+      List<dynamic> rawDeleteParameters = [
+        location.city,
+        location.state,
+        location.zip
+      ];
       await txn.rawDelete(query, rawDeleteParameters);
     });
   }
