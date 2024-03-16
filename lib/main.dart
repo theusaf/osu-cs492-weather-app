@@ -114,20 +114,34 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   bool _light = true;
+  String _temperatureUnit = 'Fahrenheit';
+  String _temperatureUnitType = 'degrees';
 
   @override
   void initState() {
     super.initState();
     _light = widget.notifier.value == ThemeMode.light;
 
-    _initMode();
+    _initSettings();
   }
 
-  void _initMode() async {
+  void _initSettings() async {
     String? locationString = widget.prefs.getString('location');
+    String? temperatureUnit = widget.prefs.getString('temperatureUnit');
+    String? temperatureUnitType = widget.prefs.getString('temperatureUnitType');
 
     if (locationString != null) {
       setLocation(UserLocation.fromJson(jsonDecode(locationString)));
+    }
+    if (temperatureUnit != null) {
+      setState(() {
+        _temperatureUnit = temperatureUnit;
+      });
+    }
+    if (temperatureUnitType != null) {
+      setState(() {
+        _temperatureUnitType = temperatureUnitType;
+      });
     }
   }
 
@@ -196,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Text('Temperature Unit Type:', style: textTheme.labelLarge),
           DropdownButton<String>(
-            value: 'degrees',
+            value: _temperatureUnitType,
             items: <String>['degrees', 'radians']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -204,10 +218,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text(value, style: textTheme.labelLarge),
               );
             }).toList(),
-            onChanged: (String? value) {},
+            onChanged: (String? value) {
+              setTemperatureUnitType(value);
+            },
           ),
         ],
       );
+    });
+  }
+
+  void setTemperatureUnitType(String? value) {
+    setState(() {
+      _temperatureUnitType = value!;
+      widget.prefs.setString('temperatureUnitType', value);
     });
   }
 
@@ -218,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Text('Temperature Units:', style: textTheme.labelLarge),
           DropdownButton<String>(
-            value: 'Fahrenheit',
+            value: _temperatureUnit,
             items: <String>['Fahrenheit', 'Celsius', 'Kelvin', 'Felcius']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -226,10 +249,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text(value, style: textTheme.labelLarge),
               );
             }).toList(),
-            onChanged: (String? value) {},
+            onChanged: (String? value) {
+              setTemperatureUnit(value);
+            },
           ),
         ],
       );
+    });
+  }
+
+  void setTemperatureUnit(String? value) {
+    setState(() {
+      _temperatureUnit = value!;
+      widget.prefs.setString('temperatureUnit', value);
     });
   }
 
