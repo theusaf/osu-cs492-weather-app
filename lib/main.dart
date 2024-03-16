@@ -167,12 +167,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget modeToggle() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(_light ? 'Light Mode' : 'Dark Mode',
-              style: Theme.of(context).textTheme.labelLarge),
+              style: textTheme.labelLarge),
           Transform.scale(
             scale: 0.5,
             child: Switch(
@@ -181,8 +181,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 
   Widget settingsDrawer() {
@@ -195,7 +195,20 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SettingsHeaderText(context: context, text: 'Settings:'),
-                modeToggle(),
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.background,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: [
+                      modeToggle(),
+                      unitToggle(),
+                      unitToggleType(),
+                    ],
+                  ),
+                ),
                 SettingsHeaderText(context: context, text: 'Locations:'),
                 Location(
                     setLocation: setLocation,
@@ -218,6 +231,50 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       }),
     );
+  }
+
+  Widget unitToggleType() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Temperature Unit Type:', style: textTheme.labelLarge),
+          DropdownButton<String>(
+            value: 'degrees',
+            items: <String>['degrees', 'radians']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: textTheme.labelLarge),
+              );
+            }).toList(),
+            onChanged: (String? value) {},
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget unitToggle() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Temperature Units:', style: textTheme.labelLarge),
+          DropdownButton<String>(
+            value: 'Fahrenheit',
+            items: <String>['Fahrenheit', 'Celsius', 'Kelvin', 'Felcius']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: textTheme.labelLarge),
+              );
+            }).toList(),
+            onChanged: (String? value) {},
+          ),
+        ],
+      );
+    });
   }
 }
 

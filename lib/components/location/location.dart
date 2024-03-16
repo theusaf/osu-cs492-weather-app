@@ -166,6 +166,7 @@ class _LocationState extends State<Location> {
         return Container(
           decoration: BoxDecoration(
             color: colorScheme.background,
+            borderRadius: BorderRadius.circular(10.0),
           ),
           child: ListView.builder(
               itemCount: _locations.length,
