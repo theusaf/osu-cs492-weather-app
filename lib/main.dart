@@ -189,6 +189,50 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget unitToggleType() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Temperature Unit Type:', style: textTheme.labelLarge),
+          DropdownButton<String>(
+            value: 'degrees',
+            items: <String>['degrees', 'radians']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: textTheme.labelLarge),
+              );
+            }).toList(),
+            onChanged: (String? value) {},
+          ),
+        ],
+      );
+    });
+  }
+
+  Widget unitToggle() {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Temperature Units:', style: textTheme.labelLarge),
+          DropdownButton<String>(
+            value: 'Fahrenheit',
+            items: <String>['Fahrenheit', 'Celsius', 'Kelvin', 'Felcius']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: textTheme.labelLarge),
+              );
+            }).toList(),
+            onChanged: (String? value) {},
+          ),
+        ],
+      );
+    });
+  }
+
   Widget settingsDrawer() {
     return SafeArea(
       child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
@@ -235,50 +279,6 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       }),
     );
-  }
-
-  Widget unitToggleType() {
-    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Temperature Unit Type:', style: textTheme.labelLarge),
-          DropdownButton<String>(
-            value: 'degrees',
-            items: <String>['degrees', 'radians']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: textTheme.labelLarge),
-              );
-            }).toList(),
-            onChanged: (String? value) {},
-          ),
-        ],
-      );
-    });
-  }
-
-  Widget unitToggle() {
-    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text('Temperature Units:', style: textTheme.labelLarge),
-          DropdownButton<String>(
-            value: 'Fahrenheit',
-            items: <String>['Fahrenheit', 'Celsius', 'Kelvin', 'Felcius']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: textTheme.labelLarge),
-              );
-            }).toList(),
-            onChanged: (String? value) {},
-          ),
-        ],
-      );
-    });
   }
 }
 
