@@ -213,6 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Text('Temperature Unit Type:', style: textTheme.labelLarge),
           DropdownButton<String>(
             value: _temperatureUnitType,
+            alignment: Alignment.centerRight,
             items: <String>['degrees', 'radians']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
@@ -244,11 +245,15 @@ class _MyHomePageState extends State<MyHomePage> {
           Text('Temperature Units:', style: textTheme.labelLarge),
           DropdownButton<String>(
             value: _temperatureUnit,
+            alignment: Alignment.centerRight,
             items: <String>['Fahrenheit', 'Celsius', 'Kelvin', 'Felcius']
                 .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
-                child: Text(value, style: textTheme.labelLarge),
+                child: Text(
+                  value,
+                  style: textTheme.labelLarge,
+                ),
               );
             }).toList(),
             onChanged: (String? value) {
