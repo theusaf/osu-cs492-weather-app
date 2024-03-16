@@ -166,11 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  SizedBox modeToggle() {
-    return SizedBox(
-      width: 400,
+  Widget modeToggle() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(_light ? 'Light Mode' : 'Dark Mode',
               style: Theme.of(context).textTheme.labelLarge),
@@ -190,26 +189,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
         return SingleChildScrollView(
-          child: Column(
-            children: [
-              SettingsHeaderText(context: context, text: 'Settings:'),
-              modeToggle(),
-              SettingsHeaderText(context: context, text: 'My Locations:'),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Location(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SettingsHeaderText(context: context, text: 'Settings:'),
+                modeToggle(),
+                SettingsHeaderText(context: context, text: 'My Locations:'),
+                Location(
                     setLocation: setLocation,
                     getLocation: getLocation,
                     closeEndDrawer: _closeEndDrawer),
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.secondary,
-                    foregroundColor: colorScheme.onSecondary,
+                const SizedBox(height: 10),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.secondary,
+                      foregroundColor: colorScheme.onSecondary,
+                    ),
+                    onPressed: _closeEndDrawer,
+                    child: const Text('Close Settings'),
                   ),
-                  onPressed: _closeEndDrawer,
-                  child: const Text('Close Settings'))
-            ],
+                )
+              ],
+            ),
           ),
         );
       }),

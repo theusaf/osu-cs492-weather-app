@@ -148,9 +148,8 @@ class _LocationState extends State<Location> {
   Widget savedLocation() {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Saved Locations:'),
+          Text('Saved Locations:', style: textTheme.labelLarge),
           IconButton(
             visualDensity: VisualDensity.compact,
             icon: const Icon(Icons.edit),
@@ -236,7 +235,7 @@ class _LocationState extends State<Location> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Add Manual Location'),
+                Text('Add Manual Location', style: textTheme.labelLarge),
                 if (isLoading == 1)
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -262,7 +261,7 @@ class _LocationState extends State<Location> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Add Current Location'),
+                Text('Add Current Location', style: textTheme.labelLarge),
                 const Icon(Icons.location_on_outlined),
                 if (isLoading == 2)
                   SizedBox(

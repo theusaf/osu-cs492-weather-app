@@ -65,7 +65,7 @@ final lightTheme = ThemeData.from(
   textTheme: GoogleFonts.convergenceTextTheme(_textThemeBase),
   colorScheme: ColorScheme.light(
     primary: Colors.green,
-    secondary: Colors.green.shade400,
+    secondary: Colors.green.shade300,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     surface: Colors.lightGreen.shade100,
