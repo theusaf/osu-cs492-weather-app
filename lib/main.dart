@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:provider/provider.dart';
-
+import 'package:cs492_weather_app/theme.dart';
 import 'components/location/location.dart';
 import 'package:flutter/material.dart';
 import 'models/user_location.dart';
@@ -33,8 +32,8 @@ class MyApp extends StatelessWidget {
       builder: (_, mode, __) {
         return MaterialApp(
           title: 'CS 492 Weather App',
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
+          theme: lightTheme,
+          darkTheme: darkTheme,
           themeMode: mode,
           home: MyHomePage(
               title: "CS492 Weather App", notifier: notifier, prefs: prefs),
@@ -144,7 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
