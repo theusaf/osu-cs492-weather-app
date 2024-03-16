@@ -1,20 +1,23 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
+import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import '../../models/user_location.dart';
 import 'package:flutter/material.dart';
-import '../location/location.dart';
 
 class WeatherScreen extends StatefulWidget {
   final Function getLocation;
   final Function getForecasts;
   final Function getForecastsHourly;
   final Function setLocation;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const WeatherScreen(
-      {super.key,
-      required this.getLocation,
-      required this.getForecasts,
-      required this.getForecastsHourly,
-      required this.setLocation});
+  const WeatherScreen({
+    super.key,
+    required this.getLocation,
+    required this.getForecasts,
+    required this.getForecastsHourly,
+    required this.setLocation,
+    required this.scaffoldKey,
+  });
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
@@ -28,7 +31,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             context: context,
             location: widget.getLocation(),
             forecasts: widget.getForecastsHourly())
-        : LocationWidget(widget: widget));
+        : LoadingLocationWidget(widget: widget));
   }
 }
 
@@ -120,8 +123,8 @@ class LocationTextWidget extends StatelessWidget {
   }
 }
 
-class LocationWidget extends StatelessWidget {
-  const LocationWidget({
+class LoadingLocationWidget extends StatelessWidget {
+  const LoadingLocationWidget({
     super.key,
     required this.widget,
   });
@@ -132,16 +135,28 @@ class LocationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 400,
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text("Requires a location to begin"),
-          ),
-          Location(
-              setLocation: widget.setLocation, getLocation: widget.getLocation),
-        ],
-      ),
+      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "No locations saved. Open the settings to add locations.",
+                style: textTheme.titleMedium,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                widget.scaffoldKey.currentState!.openEndDrawer();
+              },
+              child: Text(
+                "Open Settings",
+                style: textTheme.labelLarge,
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 }

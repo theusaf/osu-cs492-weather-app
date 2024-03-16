@@ -153,10 +153,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: WeatherScreen(
-          getLocation: getLocation,
-          getForecasts: getForecasts,
-          getForecastsHourly: getForecastsHourly,
-          setLocation: setLocation),
+        getLocation: getLocation,
+        getForecasts: getForecasts,
+        getForecastsHourly: getForecastsHourly,
+        setLocation: setLocation,
+        scaffoldKey: _scaffoldKey,
+      ),
       endDrawer: Drawer(
         child: settingsDrawer(),
       ),
