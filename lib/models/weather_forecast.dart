@@ -46,8 +46,8 @@ class WeatherForecast {
           windDirection: windDirection,
           shortForecast: shortForecast,
           detailedForecast: detailedForecast,
-          startTime: DateTime.parse(startTime),
-          endTime: DateTime.parse(endTime),
+          startTime: DateTime.parse(startTime).toLocal(),
+          endTime: DateTime.parse(endTime).toLocal(),
         ),
       _ => throw const FormatException('Failed to load Weather Forecast.'),
     };
