@@ -1,5 +1,6 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/util/math.dart';
+import 'package:cs492_weather_app/widgets/shimmer.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:cs492_weather_app/widgets/weather_icon.dart';
 import 'package:flutter/widgets.dart';
@@ -82,7 +83,9 @@ class ForecastWidget extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: DescriptionWidget(forecasts: forecasts),
+                  child: DescriptionWidget(
+                      forecast:
+                          forecasts.isNotEmpty ? forecasts.elementAt(0) : null),
                 ),
                 Expanded(
                   flex: 1,
@@ -105,41 +108,39 @@ class ForecastWidget extends StatelessWidget {
 class DescriptionWidget extends StatelessWidget {
   const DescriptionWidget({
     super.key,
-    required this.forecasts,
+    this.forecast,
   });
 
-  final List<WeatherForecast> forecasts;
+  final WeatherForecast? forecast;
 
   @override
   Widget build(BuildContext context) {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Center(
-          child: forecasts.isEmpty
-              ? Shimmer.fromColors(
-                  baseColor: colorScheme.onBackground.withAlpha(200),
-                  highlightColor: Colors.grey.shade400,
-                  child: Container(
-                    width: 100,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: colorScheme.onBackground,
-                    ),
-                  ))
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: WeatherIcon(
-                          weather: forecasts.elementAt(0).shortForecast),
-                    ),
-                    Text(
-                      forecasts.elementAt(0).shortForecast,
-                      style: textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ));
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          forecast != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: WeatherIcon(weather: forecast!.shortForecast),
+                )
+              : const ShimmerBox(
+                  width: 200,
+                  height: 200,
+                ),
+          forecast != null
+              ? Text(
+                  forecast!.shortForecast,
+                  style: textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                )
+              : const ShimmerBox(
+                  width: 200,
+                  height: 20,
+                )
+        ],
+      ));
     });
   }
 }
