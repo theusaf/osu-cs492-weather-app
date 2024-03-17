@@ -1,6 +1,6 @@
-import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cs492_weather_app/widgets/theme_builder.dart';
 
 class ShimmerBox extends StatelessWidget {
   const ShimmerBox({

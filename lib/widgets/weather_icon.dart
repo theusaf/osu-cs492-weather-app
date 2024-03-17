@@ -1,5 +1,5 @@
-import 'package:cs492_weather_app/util/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:cs492_weather_app/util/strings.dart';
 
 class WeatherIcon extends StatelessWidget {
   final String weather;

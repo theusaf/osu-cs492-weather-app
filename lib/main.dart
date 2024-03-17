@@ -1,14 +1,13 @@
 import 'dart:convert';
-
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cs492_weather_app/components/weatherScreen/weather_screen.dart';
+import 'package:cs492_weather_app/components/location/location.dart';
+import 'package:cs492_weather_app/models/user_location.dart';
+import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/theme.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
-import 'package:flutter/services.dart';
-import 'components/location/location.dart';
-import 'package:flutter/material.dart';
-import 'models/user_location.dart';
-import 'components/weatherScreen/weather_screen.dart';
-import 'models/weather_forecast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const sqlCreateDatabase = 'assets/sql/create.sql';
 

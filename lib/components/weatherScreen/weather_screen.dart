@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:cs492_weather_app/models/weather_forecast.dart';
+import 'package:cs492_weather_app/models/user_location.dart';
 import 'package:cs492_weather_app/util/math.dart';
 import 'package:cs492_weather_app/widgets/shimmer.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:cs492_weather_app/widgets/weather_icon.dart';
-import 'package:flutter/widgets.dart';
-import 'package:shimmer/shimmer.dart';
-import '../../models/user_location.dart';
-import 'package:flutter/material.dart';
 
 class WeatherScreen extends StatefulWidget {
   final Function getLocation;

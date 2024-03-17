@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import './user_location.dart';
 import 'package:http/http.dart' as http;
+import './user_location.dart';
 
 class WeatherForecast {
   final String name;

@@ -1,7 +1,7 @@
-import 'package:cs492_weather_app/widgets/theme_builder.dart';
 import 'package:flutter/material.dart';
-import '../../models/user_location.dart';
-import '../../models/location_database.dart';
+import 'package:cs492_weather_app/models/location_database.dart';
+import 'package:cs492_weather_app/models/user_location.dart';
+import 'package:cs492_weather_app/widgets/theme_builder.dart';
 
 class Location extends StatefulWidget {
   // The setter and getter for the active location
