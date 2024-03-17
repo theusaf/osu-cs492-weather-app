@@ -64,6 +64,8 @@ class ForecastWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentForecast =
+        forecasts.isNotEmpty ? forecasts.elementAt(0) : null;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -82,14 +84,12 @@ class ForecastWidget extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: DescriptionWidget(
-                      forecast:
-                          forecasts.isNotEmpty ? forecasts.elementAt(0) : null),
+                  child: DescriptionWidget(forecast: currentForecast),
                 ),
                 Expanded(
                   flex: 1,
                   child: TemperatureWidget(
-                    forecasts: forecasts,
+                    forecast: currentForecast,
                     unit: unit,
                     unitType: unitType,
                   ),
@@ -147,22 +147,22 @@ class DescriptionWidget extends StatelessWidget {
 class TemperatureWidget extends StatelessWidget {
   const TemperatureWidget({
     super.key,
-    required this.forecasts,
+    this.forecast,
     required this.unit,
     required this.unitType,
   });
 
-  final List<WeatherForecast> forecasts;
+  final WeatherForecast? forecast;
   final String unit;
   final String unitType;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 60),
+      constraints: const BoxConstraints(maxWidth: 500),
       child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
         return Center(
-          child: forecasts.isEmpty
+          child: forecast == null
               ? Shimmer.fromColors(
                   baseColor: colorScheme.onBackground.withAlpha(200),
                   highlightColor: Colors.grey.shade400,
@@ -182,7 +182,7 @@ class TemperatureWidget extends StatelessWidget {
   Widget displayContent() {
     String tempString = '';
     String tempTypeString = '';
-    double tempValue = forecasts.elementAt(0).temperature.toDouble();
+    double tempValue = forecast!.temperature.toDouble();
     switch (unit) {
       case 'Celsius':
         tempValue = fahrenheitToCelsius(tempValue);
@@ -202,7 +202,19 @@ class TemperatureWidget extends StatelessWidget {
       tempTypeString = ' rad';
     }
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
-      return Text('$tempString$tempTypeString', style: textTheme.displayLarge);
+      return Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text('$tempString$tempTypeString', style: textTheme.displayLarge),
+              Text('${forecast!.windSpeed} ${forecast!.windDirection}',
+                  style: textTheme.bodyLarge),
+            ],
+          ),
+        ),
+      );
     });
   }
 }
