@@ -1,5 +1,6 @@
 import 'package:cs492_weather_app/util/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/models/user_location.dart';
@@ -318,7 +319,10 @@ class HourlyForecastCard extends StatelessWidget {
           ),
           SizedBox(
             height: 50,
-            child: WeatherIcon(weather: forecast.shortForecast),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: WeatherIcon(weather: forecast.shortForecast),
+            ),
           ),
           Text('$tempString$tempTypeString',
               style: textTheme.bodyLarge, textAlign: TextAlign.center),
