@@ -283,7 +283,36 @@ class DailyForecastCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('${forecast.temperature}${forecast.name}°');
+    String tempString = '';
+    String tempTypeString = '';
+    [tempString, tempTypeString] = getTemperatureValue(
+        unit: unit,
+        unitType: unitType,
+        temperature: forecast.temperature.toDouble());
+
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            forecast.name,
+            style: textTheme.labelLarge,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 50,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: WeatherIcon(weather: forecast.shortForecast),
+            ),
+          ),
+          Text('$tempString$tempTypeString',
+              style: textTheme.bodyLarge, textAlign: TextAlign.center),
+          Text(forecast.shortForecast,
+              style: textTheme.bodyMedium, textAlign: TextAlign.center),
+        ],
+      );
+    });
   }
 }
 
