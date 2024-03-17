@@ -132,6 +132,8 @@ class SingleForecastView extends StatelessWidget {
           FutureForecastListing(
             forecastsHourly: forecastsHourly,
             forecastsTwiceDaily: forecastsTwiceDaily,
+            unit: unit,
+            unitType: unitType,
           ),
         ],
       ),
@@ -144,10 +146,14 @@ class FutureForecastListing extends StatefulWidget {
     super.key,
     required this.forecastsHourly,
     required this.forecastsTwiceDaily,
+    required this.unit,
+    required this.unitType,
   });
 
   final List<WeatherForecast> forecastsHourly;
   final List<WeatherForecast> forecastsTwiceDaily;
+  final String unit;
+  final String unitType;
 
   @override
   State<FutureForecastListing> createState() => _FutureForecastListingState();
@@ -244,8 +250,14 @@ class _FutureForecastListingState extends State<FutureForecastListing> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: isHourly
-                          ? HourlyForecastCard(forecast: forecast)
-                          : DailyForecastCard(forecast: forecast)),
+                          ? HourlyForecastCard(
+                              forecast: forecast,
+                              unit: widget.unit,
+                              unitType: widget.unitType)
+                          : DailyForecastCard(
+                              forecast: forecast,
+                              unit: widget.unit,
+                              unitType: widget.unitType)),
                 ),
               );
             },
@@ -260,9 +272,13 @@ class DailyForecastCard extends StatelessWidget {
   const DailyForecastCard({
     super.key,
     required this.forecast,
+    required this.unit,
+    required this.unitType,
   });
 
   final WeatherForecast forecast;
+  final String unit;
+  final String unitType;
 
   @override
   Widget build(BuildContext context) {
@@ -274,12 +290,23 @@ class HourlyForecastCard extends StatelessWidget {
   const HourlyForecastCard({
     super.key,
     required this.forecast,
+    required this.unit,
+    required this.unitType,
   });
 
   final WeatherForecast forecast;
+  final String unit;
+  final String unitType;
 
   @override
   Widget build(BuildContext context) {
+    String tempString = '';
+    String tempTypeString = '';
+    [tempString, tempTypeString] = getTemperatureValue(
+        unit: unit,
+        unitType: unitType,
+        temperature: forecast.temperature.toDouble());
+
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -287,14 +314,16 @@ class HourlyForecastCard extends StatelessWidget {
           Text(
             '${forecast.startTime.month}/${forecast.startTime.day} ${padZeroes(number: forecast.startTime.hour)}:${padZeroes(number: forecast.startTime.minute)}',
             style: textTheme.labelLarge,
+            textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 50,
             child: WeatherIcon(weather: forecast.shortForecast),
           ),
-          Text('${forecast.temperature}${forecast.name}°',
-              style: textTheme.bodyLarge),
-          Text(forecast.shortForecast, style: textTheme.bodyMedium),
+          Text('$tempString$tempTypeString',
+              style: textTheme.bodyLarge, textAlign: TextAlign.center),
+          Text(forecast.shortForecast,
+              style: textTheme.bodyMedium, textAlign: TextAlign.center),
         ],
       );
     });
@@ -379,25 +408,11 @@ class TemperatureWidget extends StatelessWidget {
   Widget displayContent() {
     String tempString = '';
     String tempTypeString = '';
-    double tempValue = forecast!.temperature.toDouble();
-    switch (unit) {
-      case 'Celsius':
-        tempValue = fahrenheitToCelsius(tempValue);
-        break;
-      case 'Kelvin':
-        tempValue = fahrenheitToKelvin(tempValue);
-        break;
-      case 'Felcius':
-        tempValue = fahrenheitToFelcius(tempValue);
-        break;
-    }
-    if (unitType == 'degrees') {
-      tempString = tempValue.toStringAsFixed(0);
-      tempTypeString = '°';
-    } else {
-      tempString = degreesToRadians(tempValue).toStringAsFixed(3);
-      tempTypeString = ' rad';
-    }
+    [tempString, tempTypeString] = getTemperatureValue(
+        unit: unit,
+        unitType: unitType,
+        temperature: forecast!.temperature.toDouble());
+
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Card(
         elevation: 4,
@@ -418,6 +433,33 @@ class TemperatureWidget extends StatelessWidget {
       );
     });
   }
+}
+
+List<String> getTemperatureValue(
+    {required String unit,
+    required String unitType,
+    required double temperature}) {
+  String tempString = '';
+  String tempTypeString = '';
+  switch (unit) {
+    case 'Celsius':
+      temperature = fahrenheitToCelsius(temperature);
+      break;
+    case 'Kelvin':
+      temperature = fahrenheitToKelvin(temperature);
+      break;
+    case 'Felcius':
+      temperature = fahrenheitToFelcius(temperature);
+      break;
+  }
+  if (unitType == 'degrees') {
+    tempString = temperature.toStringAsFixed(0);
+    tempTypeString = '°';
+  } else {
+    tempString = degreesToRadians(temperature).toStringAsFixed(3);
+    tempTypeString = ' rad';
+  }
+  return [tempString, tempTypeString];
 }
 
 class LocationTextWidget extends StatelessWidget {
