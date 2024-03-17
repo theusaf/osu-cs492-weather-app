@@ -36,3 +36,4 @@ flutter:
     - assets/sql/delete.sql
     # images
     - assets/images/confused.png
+    - assets/images/weather/

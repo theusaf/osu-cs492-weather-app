@@ -1,6 +1,8 @@
 import 'package:cs492_weather_app/models/weather_forecast.dart';
 import 'package:cs492_weather_app/util/math.dart';
 import 'package:cs492_weather_app/widgets/theme_builder.dart';
+import 'package:cs492_weather_app/widgets/weather_icon.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../models/user_location.dart';
 import 'package:flutter/material.dart';
@@ -65,16 +67,35 @@ class ForecastWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(
-            height: 50,
+          const SizedBox(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LocationTextWidget(location: location),
+            ],
           ),
-          LocationTextWidget(location: location),
-          TemperatureWidget(
-              forecasts: forecasts, unit: unit, unitType: unitType),
-          DescriptionWidget(forecasts: forecasts),
-          const SizedBox(
-            height: 50,
+          const SizedBox(height: 10),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: DescriptionWidget(forecasts: forecasts),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: TemperatureWidget(
+                    forecasts: forecasts,
+                    unit: unit,
+                    unitType: unitType,
+                  ),
+                ),
+              ],
+            ),
           ),
+          const SizedBox(height: 50),
         ],
       ),
     );
@@ -91,25 +112,35 @@ class DescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 500, maxHeight: 25),
-      child: ThemeBuilder(builder: (context, colorScheme, textTheme) {
-        return Center(
-            child: forecasts.isEmpty
-                ? Shimmer.fromColors(
-                    baseColor: colorScheme.onBackground.withAlpha(200),
-                    highlightColor: Colors.grey.shade400,
-                    child: Container(
-                      width: 100,
-                      height: 20,
-                      decoration: BoxDecoration(
-                        color: colorScheme.onBackground,
-                      ),
-                    ))
-                : Text(forecasts.elementAt(0).shortForecast,
-                    style: textTheme.bodyMedium));
-      }),
-    );
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Center(
+          child: forecasts.isEmpty
+              ? Shimmer.fromColors(
+                  baseColor: colorScheme.onBackground.withAlpha(200),
+                  highlightColor: Colors.grey.shade400,
+                  child: Container(
+                    width: 100,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: colorScheme.onBackground,
+                    ),
+                  ))
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: WeatherIcon(
+                          weather: forecasts.elementAt(0).shortForecast),
+                    ),
+                    Text(
+                      forecasts.elementAt(0).shortForecast,
+                      style: textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ));
+    });
   }
 }
 
