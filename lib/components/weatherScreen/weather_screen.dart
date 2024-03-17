@@ -282,15 +282,19 @@ class HourlyForecastCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeBuilder(builder: (context, colorScheme, textTheme) {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-              '${forecast.startTime.month}/${forecast.startTime.day} ${padZeroes(number: forecast.startTime.hour)}:${padZeroes(number: forecast.startTime.minute)}'),
+            '${forecast.startTime.month}/${forecast.startTime.day} ${padZeroes(number: forecast.startTime.hour)}:${padZeroes(number: forecast.startTime.minute)}',
+            style: textTheme.labelLarge,
+          ),
           SizedBox(
             height: 50,
             child: WeatherIcon(weather: forecast.shortForecast),
           ),
-          Text('${forecast.temperature}${forecast.name}°'),
-          Text(forecast.shortForecast),
+          Text('${forecast.temperature}${forecast.name}°',
+              style: textTheme.bodyLarge),
+          Text(forecast.shortForecast, style: textTheme.bodyMedium),
         ],
       );
     });

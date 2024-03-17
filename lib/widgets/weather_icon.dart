@@ -18,10 +18,20 @@ class WeatherIcon extends StatelessWidget {
       "snow",
       "rain"
     ];
-    weatherStrings.sort((a, b) =>
-        ((similarity(b, normalizedWeather) - similarity(a, normalizedWeather)) *
-                100)
-            .toInt());
+    weatherStrings.sort((a, b) {
+      bool hasA = normalizedWeather.contains(a);
+      bool hasB = normalizedWeather.contains(b);
+      if (hasA && !hasB) {
+        return -1;
+      }
+      if (hasB && !hasA) {
+        return 1;
+      }
+      return ((similarity(b, normalizedWeather) -
+                  similarity(a, normalizedWeather)) *
+              100)
+          .toInt();
+    });
     return Image.asset(
       'assets/images/weather/${weatherStrings.first}.png',
     );
