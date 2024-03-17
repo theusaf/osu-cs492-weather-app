@@ -38,7 +38,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
         ? ForecastWidget(
             context: context,
             location: widget.getLocation(),
-            forecasts: widget.getForecastsHourly(),
+            forecastsHourly: widget.getForecastsHourly(),
+            forecastsTwiceDaily: widget.getForecasts(),
             unit: widget.units,
             unitType: widget.unitType,
           )
@@ -48,7 +49,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
 class ForecastWidget extends StatelessWidget {
   final UserLocation location;
-  final List<WeatherForecast> forecasts;
+  final List<WeatherForecast> forecastsHourly;
+  final List<WeatherForecast> forecastsTwiceDaily;
   final BuildContext context;
   final String unit;
   final String unitType;
@@ -57,15 +59,43 @@ class ForecastWidget extends StatelessWidget {
     super.key,
     required this.context,
     required this.location,
-    required this.forecasts,
+    required this.forecastsHourly,
+    required this.forecastsTwiceDaily,
     required this.unit,
     required this.unitType,
   });
 
   @override
   Widget build(BuildContext context) {
+    return SingleForecastView(
+        location: location,
+        forecastsHourly: forecastsHourly,
+        forecastsTwiceDaily: forecastsTwiceDaily,
+        unit: unit,
+        unitType: unitType);
+  }
+}
+
+class SingleForecastView extends StatelessWidget {
+  const SingleForecastView({
+    super.key,
+    required this.location,
+    required this.forecastsHourly,
+    required this.forecastsTwiceDaily,
+    required this.unit,
+    required this.unitType,
+  });
+
+  final UserLocation location;
+  final List<WeatherForecast> forecastsHourly;
+  final List<WeatherForecast> forecastsTwiceDaily;
+  final String unit;
+  final String unitType;
+
+  @override
+  Widget build(BuildContext context) {
     final currentForecast =
-        forecasts.isNotEmpty ? forecasts.elementAt(0) : null;
+        forecastsHourly.isNotEmpty ? forecastsHourly.elementAt(0) : null;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -78,7 +108,7 @@ class ForecastWidget extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Container(
-            constraints: const BoxConstraints(maxWidth: 400),
+            constraints: const BoxConstraints(maxWidth: 400, minHeight: 250),
             child: Flex(
               direction: Axis.horizontal,
               children: [
@@ -98,8 +128,119 @@ class ForecastWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 50),
+          FutureForecastListing(
+            forecastsHourly: forecastsHourly,
+            forecastsTwiceDaily: forecastsTwiceDaily,
+          ),
         ],
       ),
+    );
+  }
+}
+
+class FutureForecastListing extends StatefulWidget {
+  const FutureForecastListing({
+    super.key,
+    required this.forecastsHourly,
+    required this.forecastsTwiceDaily,
+  });
+
+  final List<WeatherForecast> forecastsHourly;
+  final List<WeatherForecast> forecastsTwiceDaily;
+
+  @override
+  State<FutureForecastListing> createState() => _FutureForecastListingState();
+}
+
+class _FutureForecastListingState extends State<FutureForecastListing> {
+  bool isHourly = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final forecastItems =
+        isHourly ? widget.forecastsHourly : widget.forecastsTwiceDaily;
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isHourly = true;
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    color: isHourly
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Text('Hourly Forecast',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: isHourly
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onSurface,
+                          )),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isHourly = false;
+                  });
+                },
+                child: AnimatedContainer(
+                  decoration: BoxDecoration(
+                    color: !isHourly
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.surface,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  duration: const Duration(milliseconds: 200),
+                  child: Text(
+                    'Daily Forecast',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: !isHourly
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          constraints: const BoxConstraints(maxHeight: 200),
+          child: ListView.builder(
+            key: ValueKey(isHourly),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: forecastItems.length,
+            itemBuilder: (context, index) {
+              final forecast = forecastItems[index];
+              return SizedBox(
+                width: 150,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('${forecast.temperature}°'),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
