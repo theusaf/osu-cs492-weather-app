@@ -225,8 +225,17 @@ class _FutureForecastListingState extends State<FutureForecastListing> {
             key: ValueKey(isHourly),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: forecastItems.length,
+            itemCount: forecastItems.isEmpty ? 5 : forecastItems.length,
             itemBuilder: (context, index) {
+              if (forecastItems.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: ShimmerBox(
+                    width: 150,
+                    height: 250,
+                  ),
+                );
+              }
               final forecast = forecastItems[index];
               return SizedBox(
                 width: 150,
