@@ -1,5 +1,13 @@
 import 'dart:math';
 
+String padZeroes({required int number, int length = 2}) {
+  String numberString = number.toString();
+  while (numberString.length < length) {
+    numberString = '0$numberString';
+  }
+  return numberString;
+}
+
 // Adapted from https://stackoverflow.com/a/36566052/5844241
 double similarity(String s1, String s2) {
   String longer = s1;

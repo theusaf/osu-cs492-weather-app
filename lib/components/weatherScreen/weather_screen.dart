@@ -1,3 +1,4 @@
+import 'package:cs492_weather_app/util/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cs492_weather_app/models/weather_forecast.dart';
@@ -241,9 +242,10 @@ class _FutureForecastListingState extends State<FutureForecastListing> {
                 width: 150,
                 child: Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('${forecast.temperature}°'),
-                  ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: isHourly
+                          ? HourlyForecastCard(forecast: forecast)
+                          : DailyForecastCard(forecast: forecast)),
                 ),
               );
             },
@@ -251,6 +253,47 @@ class _FutureForecastListingState extends State<FutureForecastListing> {
         ),
       ],
     );
+  }
+}
+
+class DailyForecastCard extends StatelessWidget {
+  const DailyForecastCard({
+    super.key,
+    required this.forecast,
+  });
+
+  final WeatherForecast forecast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('${forecast.temperature}${forecast.name}°');
+  }
+}
+
+class HourlyForecastCard extends StatelessWidget {
+  const HourlyForecastCard({
+    super.key,
+    required this.forecast,
+  });
+
+  final WeatherForecast forecast;
+
+  @override
+  Widget build(BuildContext context) {
+    return ThemeBuilder(builder: (context, colorScheme, textTheme) {
+      return Column(
+        children: [
+          Text(
+              '${forecast.startTime.month}/${forecast.startTime.day} ${padZeroes(number: forecast.startTime.hour)}:${padZeroes(number: forecast.startTime.minute)}'),
+          SizedBox(
+            height: 50,
+            child: WeatherIcon(weather: forecast.shortForecast),
+          ),
+          Text('${forecast.temperature}${forecast.name}°'),
+          Text(forecast.shortForecast),
+        ],
+      );
+    });
   }
 }
 
@@ -317,8 +360,8 @@ class TemperatureWidget extends StatelessWidget {
                   baseColor: colorScheme.onBackground.withAlpha(200),
                   highlightColor: Colors.grey.shade400,
                   child: Container(
-                    width: 80,
-                    height: 40,
+                    width: 100,
+                    height: 80,
                     decoration: BoxDecoration(
                       color: colorScheme.onBackground,
                     ),
@@ -358,7 +401,11 @@ class TemperatureWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text('$tempString$tempTypeString', style: textTheme.displayLarge),
+              Text(
+                '$tempString$tempTypeString',
+                style: textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
               Text('${forecast!.windSpeed} ${forecast!.windDirection}',
                   style: textTheme.bodyLarge),
             ],
