@@ -75,6 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     setState(() {
       _location = location;
+      _forecasts = [];
+      _forecastsHourly = [];
       _getForecasts();
     });
   }
